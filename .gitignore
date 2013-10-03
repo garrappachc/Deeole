@@ -11,3 +11,8 @@
 *.lai
 *.la
 *.a
+
+# Linux files
+*.kdev4
+.directory
+
