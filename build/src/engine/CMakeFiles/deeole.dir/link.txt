@@ -1,1 +1,0 @@
-/usr/bin/c++  -fPIC -std=c++11 -fvisibility=hidden -g -Wall -DDEE_DEBUG -Wl,--no-undefined -shared -Wl,-soname,libdeeole.so.1 -o ../../libdeeole.so.1.0.0 CMakeFiles/deeole.dir/main.cpp.o -Wl,--start-group -Wl,--whole-archive core/libcore.a -Wl,--no-whole-archive -Wl,--end-group -lGLU -lGL -lSM -lICE -lX11 -lXext -lpthread -lSM -lICE -lX11 -lXext -lpthread 
