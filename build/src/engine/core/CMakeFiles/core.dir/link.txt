@@ -1,0 +1,2 @@
+/usr/bin/ar cr libcore.a  CMakeFiles/core.dir/deeglobal.cpp.o
+/usr/bin/ranlib libcore.a

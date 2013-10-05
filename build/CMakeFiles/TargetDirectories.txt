@@ -1,0 +1,2 @@
+/home/garapich/Dokumenty/Deeole/build/src/engine/core/CMakeFiles/core.dir
+/home/garapich/Dokumenty/Deeole/build/src/engine/CMakeFiles/deeole.dir
