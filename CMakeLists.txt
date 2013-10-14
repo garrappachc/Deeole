@@ -23,3 +23,16 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 endif (CMAKE_COMPILER_IS_GNUCXX)
 
 add_subdirectory(src)
+
+install(FILES FindDeeole.cmake DESTINATION ${CMAKE_ROOT}/Modules)
+
+# add a target to generate API documentation with Doxygen
+find_package(Doxygen QUIET)
+if (DOXYGEN_FOUND)
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+  add_custom_target(doc
+    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Generating API documentation with Doxygen" VERBATIM
+  )
+endif(DOXYGEN_FOUND)

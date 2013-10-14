@@ -8,6 +8,8 @@ endif (CMAKE_COMPILER_IS_GNUCXX)
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/main.cpp "")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
   ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/config.h
+  DESTINATION include/deeole)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -17,6 +19,7 @@ set_target_properties(${deeole_TARGET} PROPERTIES VERSION 1.0.0 SOVERSION 1)
 
 set(deeole_SUBDIRS
   core
+  utils
 )
 
 foreach(DIR ${deeole_SUBDIRS})
