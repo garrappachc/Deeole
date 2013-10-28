@@ -58,8 +58,8 @@ template <typename... Args>
   class __DeeExport__ Signal:
     public AbstractSignal {
     
-    using FunctionType = void (Eventful::*)(Args...);
-    using SlotType     = Slot<Args...>;
+    using SlotFunctionType = void (Eventful::*)(Args...);
+    using SlotType         = Slot<Args...>;
     
   public:
     
@@ -107,7 +107,21 @@ template <typename... Args>
           type = __connectionType;
         
         receiver->addSender(this);
-        __slots.push_back(SlotType(type, receiver, static_cast<FunctionType>(slot)));
+        __slots.push_back(
+          new SlotType(
+            type, receiver, static_cast<SlotFunctionType>(slot)
+          )
+        );
+      }
+    
+    template <typename LambdaType>
+      void connect(LambdaType lambda, ConnectionType type = AutoConnection) {
+        if (type == AutoConnection)
+          type = __connectionType;
+        
+        __slots.push_back(
+          new SlotType(
+            type, lambda));
       }
     
     /**
@@ -120,8 +134,8 @@ template <typename... Args>
      * \param args Arguments forwarded to the slot.
      */
     void operator ()(Args... args) {
-      for (SlotType& slot: __slots)
-        slot.call(std::forward<Args>(args)...);
+      for (SlotType* slot: __slots)
+        slot->call(std::forward<Args>(args)...);
     }
     
     /**
@@ -132,13 +146,15 @@ template <typename... Args>
      * 
      * \param receiver The slots receiver.
      */
-    void disconnect(Eventful* receiver) {
+    void disconnect(Eventful* receiver) override {
       auto it = __slots.begin();
       while (it != __slots.end()) {
-        if (it->receiver() == receiver)
+        if ((*it)->receiver() == receiver) {
+          delete (*it);
           __slots.erase(it);
-        else
+        } else {
           ++it;
+        }
       }
     }
     
@@ -154,24 +170,28 @@ template <typename... Args>
       void disconnect(Eventful* receiver, CustomFunctionType slot) {
         auto it = __slots.begin();
         while (it != __slots.end()) {
-          if (it->receiver() == receiver && it->function() == slot)
+          if ((*it)->receiver() == receiver && (*it)->function() == slot) {
+            delete (*it);
             __slots.erase(it);
-          else
+          } else {
             ++it;
+          }
         }
       }
     
   private:
     
     void __freeReceivers() {
-      for (SlotType& slot: __slots)
-        slot.receiver()->removeSender(this);
+      for (SlotType* slot: __slots) {
+        if (slot->receiver())
+          slot->receiver()->removeSender(this);
+      }
       
       __slots.clear();
     }
     
-    ConnectionType        __connectionType;
-    std::vector<SlotType> __slots;
+    ConnectionType         __connectionType;
+    std::vector<SlotType*> __slots;
     
   }; /** @} */
 

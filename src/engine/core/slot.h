@@ -32,71 +32,50 @@ namespace Dee {
 /**
  * \cond HIDDEN_DOC
  */
-class __DeeHide__ AbstractSlotData {
-public:
-  virtual ~AbstractSlotData() = default;
-  virtual void call() = 0;
+namespace Helpers {
+  /* Helpful structs */
+  template <int ...S>
+    struct Seq {};
+  
+  template <int N, int ...S>
+    struct Gens : Gens<N-1, N-1, S...> {};
+  
+  template <int ...S>
+    struct Gens<0, S...> {
+      typedef Seq<S...> type;
+    };
+}
+
+/**
+ * Abstract template class, used to call given slots.
+ */
+template <typename... Args>
+  class __DeeHide__ AbstractSlotCaller {
+  public:
+    virtual void call(const std::tuple<Args...>& args) = 0;
+    virtual void call(Args&&... args) = 0;
 };
 
+/**
+ * Template class, used to call slots on eventful objects.
+ */
 template <typename... Args>
-  class __DeeHide__ SlotData :
-    public AbstractSlotData {
-    
+  class __DeeHide__ EventfulSlotCaller :
+    public AbstractSlotCaller<Args...> {
+      
     using FunctionType = void (Eventful::*)(Args...);
-    
-    /* Helpful structs */
-    template <int ...S>
-      struct __seq {};
-    
-    template <int N, int ...S>
-      struct __gens : __gens<N-1, N-1, S...> {};
-    
-    template <int ...S>
-      struct __gens<0, S...> {
-        typedef __seq<S...> type;
-      };
-    
-    template <int ...S>
-      void __unpackCall(__seq<S...>) {
-        (__receiver->*__function)(std::get<S>(__data) ...);
-      }
-    
+     
   public:
-    SlotData(Eventful* receiver, FunctionType function, Args&&... args) :
+    EventfulSlotCaller(Eventful* receiver, FunctionType function) :
         __receiver(receiver),
-        __function(function),
-        __data(std::forward<Args>(args)...) {}
+        __function(function) {}
     
-    void call() {
-      __unpackCall(typename __gens<sizeof...(Args)>::type());
+    void call(const std::tuple<Args...>& args) {
+      __unpackCall(args, typename Helpers::Gens<sizeof...(Args)>::type());
     }
-        
-  private:
-    Eventful*           __receiver;
-    FunctionType        __function;
-    std::tuple<Args...> __data;
-    
-  };
-
-template <typename... Args>
-  class __DeeHide__ Slot {
-    
-    using FunctionType = void (Eventful::*)(Args...);
-    
-  public:
-    Slot(ConnectionType type = QueuedConnection, Eventful* receiver = nullptr,
-         FunctionType function = nullptr) :
-        __connectionType(type),
-        __function(function),
-        __receiver(receiver) {}
     
     void call(Args&&... args) {
-      DeeAssert(__receiver);
-      
-      __connectionType == QueuedConnection ?
-          SlotQueue::enqueue(
-            new SlotData<Args...>(__receiver, __function, std::forward<Args>(args)...)) :
-          (__receiver->*__function)(std::forward<Args>(args)...);
+      (__receiver->*__function)(args...);
     }
     
     Eventful* receiver() {
@@ -108,9 +87,122 @@ template <typename... Args>
     }
     
   private:
-    ConnectionType __connectionType;
-    FunctionType   __function;
-    Eventful*      __receiver;
+    template <int ...S>
+      void __unpackCall(const std::tuple<Args...>& args, Helpers::Seq<S...>) {
+        (__receiver->*__function)(std::get<S>(args) ...);
+      }
+    
+    Eventful*    __receiver;
+    FunctionType __function;
+  };
+
+/**
+ * Template class, used to call lambdas (or functions).
+ */
+template <typename Lambda, typename... Args>
+  class __DeeHide__ LambdaSlotCaller :
+    public AbstractSlotCaller<Args...> {
+    
+  public:
+    LambdaSlotCaller(Lambda lambda) :
+        __lambda(lambda) {}
+    
+    void call(const std::tuple<Args...>& args) {
+      __unpackCall(args, typename Helpers::Gens<sizeof...(Args)>::type());
+    }
+    
+    void call(Args&&... args) {
+      __lambda(args...);
+    }
+    
+  private:
+    template <int ...S>
+      void __unpackCall(const std::tuple<Args...>& args, Helpers::Seq<S...>) {
+        (__lambda)(std::get<S>(args) ...);
+      }
+      
+    Lambda __lambda;
+  };
+
+/**
+ * Abstract class, used to store items and callers.
+ */
+class __DeeHide__ AbstractSlotData {
+public:
+  virtual ~AbstractSlotData() = default;
+  virtual void call() = 0;  
+};
+
+/**
+ * Class used to store one particular slot.
+ */
+template <typename... Args>
+  class __DeeHide__ SlotData :
+    public AbstractSlotData {
+    
+    using FunctionType = void (Eventful::*)(Args...);
+    
+  public:
+    SlotData(AbstractSlotCaller<Args...>* caller, Args&&... args) :
+        __caller(caller),
+        __data(std::forward<Args>(args)...) {}
+    
+    void call() override {
+      __caller->call(__data);
+    }
+    
+  private:
+    AbstractSlotCaller<Args...>* __caller;
+    std::tuple<Args...>          __data;
+    
+  };
+  
+template <typename... Args>
+  class __DeeHide__ Slot {
+    
+    using FunctionType = void (Eventful::*)(Args...);
+    
+  public:
+    Slot(ConnectionType type, Eventful* receiver,
+         FunctionType function) :
+        __connectionType(type),
+        __caller(new EventfulSlotCaller<Args...>(receiver, function)) {}
+    
+    template <typename LambdaType>
+      Slot(ConnectionType type, LambdaType lambda):
+          __connectionType(type),
+          __caller(new LambdaSlotCaller<LambdaType, Args...>(lambda)) {}
+    
+    virtual ~Slot() {
+      delete __caller;
+    }
+    
+    void call(Args&&... args) {
+      __connectionType == QueuedConnection ?
+          SlotQueue::enqueue(
+            new SlotData<Args...>(__caller, std::forward<Args>(args)...)) :
+          __caller->call(std::forward<Args>(args)...);
+    }
+    
+    Eventful* receiver() {
+      auto c = dynamic_cast<EventfulSlotCaller<Args...>*>(__caller);
+      if (c)
+        return c->receiver();
+      else
+        return nullptr;
+    }
+    
+    FunctionType function() {
+      auto c = dynamic_cast<EventfulSlotCaller<Args...>*>(__caller);
+      if (c)
+        return c->function();
+      else
+        return nullptr;
+    }
+    
+  private:
+    ConnectionType               __connectionType;
+    AbstractSlotCaller<Args...>* __caller;
     
   };
 /**
