@@ -36,11 +36,15 @@ Window::~Window() {
 DeeSlot Window::show() {
   updateVisibility(true);
   __visible = true;
+  
+  emit shown();
 }
 
 DeeSlot Window::hide() {
   updateVisibility(false);
   __visible = false;
+  
+  emit closed();
 }
 
 void Window::setName(std::string name) {
@@ -65,8 +69,10 @@ void Window::setSize(int width, int height) {
 }
 
 void Window::setFullscreen(bool fullscreen) {
-  
+  if (updateFullscreen(fullscreen))
+    __fullscreen = fullscreen;
 }
+
 
 
 

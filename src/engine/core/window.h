@@ -125,7 +125,7 @@ public:
    * 
    * \sa Application::run().
    */
-  void swapBuffers() = 0;
+  virtual void swapBuffers() = 0;
   
   /**
    * Gets the window name.
@@ -204,7 +204,7 @@ protected:
    * \param visible If true, the window must be shown on the screen,
    *    if false - closed.
    */
-  void updateVisibility(bool visible);
+  virtual void updateVisibility(bool visible) = 0;
   
   /**
    * Called just after setName() is called.
@@ -213,7 +213,7 @@ protected:
    * 
    * \param name The new window name.
    */
-  void updateName(const std::string& name) = 0;
+  virtual void updateName(const std::string& name) = 0;
   
   /**
    * Called just after setWidth(), setHeight() or setSize() are called.
@@ -223,7 +223,7 @@ protected:
    * \param width The new width.
    * \param height The new height.
    */
-  void updateSize(int width, int height) = 0;
+  virtual void updateSize(int width, int height) = 0;
   
   /**
    * Called just after setFullscreen() is called.
@@ -232,7 +232,7 @@ protected:
    * It everything run properly and the window _is_ fullscreen, return
    * true.
    */
-  bool updateFullscreen(bool fullscreen) = 0;
+  virtual bool updateFullscreen(bool fullscreen) = 0;
   
   /**
    * \endcond

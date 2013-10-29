@@ -53,8 +53,6 @@ int Application::run() {
 }
 
 DeeSlot Application::quit() {
-  Logger::debug("Application: exiting...");
-  
   __exitCode = 0;
   __isRunning = false;
 }

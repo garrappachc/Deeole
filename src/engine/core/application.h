@@ -28,7 +28,9 @@
 
 namespace Dee {
   
+  class InputHandler;
   class SlotQueue;
+  class Window;
 
 /**
  * \ingroup Core
@@ -116,6 +118,14 @@ public:
    */
   static void processEvents();
   
+  inline static InputHandler* input() {
+    return singleton().__inputHandler;
+  }
+  
+  inline static Window* window() {
+    return singleton().__window;
+  }
+  
   // signals
   Signal<> aboutToQuit; /**< Emitted just before the event loop stops. */
   
@@ -123,7 +133,10 @@ public:
   
 private:
   
-  SlotQueue* __slotQueue;
+  InputHandler* __inputHandler;
+  SlotQueue*    __slotQueue;
+  Window*       __window;
+  
   bool       __isRunning;
   int        __exitCode;
 
