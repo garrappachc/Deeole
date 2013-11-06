@@ -64,6 +64,8 @@ private:
   
   static Atom& __wmCloseMessage();
   
+  static int __x11ErrorHandler(Display* display, XErrorEvent* error);
+  
   static Display*   __display;
   static GlXVersion __glxVersion;
 

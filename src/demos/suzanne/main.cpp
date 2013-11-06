@@ -36,7 +36,6 @@ int main(int argc, char** argv) {
     
     if (keyboard->keyDown(Dee::Key::F) && keyboard->keyDown(Dee::Key::LCtrl)) {
       if (!keyDown) {
-        std::cout << "Switching fullscreen..." << std::endl;
         deeApp->window()->setFullscreen(!deeApp->window()->fullscreen());
         keyDown = true;
       }

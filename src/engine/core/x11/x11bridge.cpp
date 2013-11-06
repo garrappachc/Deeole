@@ -17,6 +17,8 @@
  *
  */
 
+#include <cstring>
+
 #include "core/application.h"
 #include "core/glbridge.h"
 #include "core/inputhandler.h"
@@ -39,6 +41,7 @@ void X11Bridge::openDisplay() {
   
   Logger::debug("X11: connection established.");
   
+  XSetErrorHandler(X11Bridge::__x11ErrorHandler);
   XInitThreads();
   glXQueryVersion(X11::display(), &__glxVersion.major, &__glxVersion.minor);
   
@@ -160,6 +163,16 @@ GLXContext X11Bridge::glXCreateContextAttribsARB(Display* display, GLXFBConfig f
 Atom& X11Bridge::__wmCloseMessage() {
   static Atom atom = XInternAtom(X11::display(), "WM_DELETE_WINDOW", False);
   return atom;
+}
+
+int X11Bridge::__x11ErrorHandler(Display* display, XErrorEvent* error) {
+  static char buffer[256];
+  
+  memset(buffer, '\0', sizeof(buffer));
+  XGetErrorText(display, error->error_code, buffer, sizeof(buffer));
+  
+  Logger::warning("X11 error: %s", buffer);
+  return 0;
 }
 
 } /* namespace Dee */
