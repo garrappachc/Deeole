@@ -20,6 +20,8 @@
 #ifndef X11WINDOW_H
 #define X11WINDOW_H
 
+#include <GL/glx.h>
+
 #include "core/deeglobal.h"
 
 #include "core/window.h"
@@ -56,11 +58,14 @@ protected:
   bool updateFullscreen(bool fullscreen) override;
   
 private:
-  void resizeEvent(int width, int height);
-  void showEvent();
-  void closeEvent();
-  
   void __setupWindow();
+  void __destroyWindow();
+  
+  typedef ::Window     HandleType;
+  typedef ::GLXContext ContextType;
+  
+  HandleType __handle;
+  ContextType __context;
   
 
 }; /** @} */

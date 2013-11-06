@@ -24,7 +24,7 @@
 
 #include "core/deeglobal.h"
 
-#include "core/eventful.h"
+#include "core/object.h"
 #include "core/signal.h"
 
 namespace Dee {
@@ -43,7 +43,7 @@ namespace Dee {
  * \sa Mutex, Timer.
  */
 class __DeeExport__ Thread :
-    public Eventful {
+    public Object {
   
   /**
    * The system-dependent handle type.

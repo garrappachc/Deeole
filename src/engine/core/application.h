@@ -22,7 +22,7 @@
 
 #include "core/deeglobal.h"
 
-#include "core/eventful.h"
+#include "core/object.h"
 #include "core/signal.h"
 #include "core/singleton.h"
 
@@ -48,7 +48,7 @@ namespace Dee {
  * Dee::Application is created.
  */
 class __DeeExport__ Application :
-    public Eventful,
+    public Object,
     public Singleton<Application> {
   
 public:
@@ -128,6 +128,9 @@ public:
   
   // signals
   Signal<> aboutToQuit; /**< Emitted just before the event loop stops. */
+  Signal<> beforeRender; /**< Emitted just before the scene starts to be rendered. */
+  Signal<> afterRender; /**< Emitted just after the scene is rendered, but before
+                             the buffers are swapped. */
   
   Application() = delete;
   

@@ -1,5 +1,5 @@
 /*
- * inputhandler.h
+ * object.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,61 +17,58 @@
  *
  */
 
-#ifndef INPUTHANDLER_H
-#define INPUTHANDLER_H
+#ifndef EVENTFUL_H
+#define EVENTFUL_H
+
+#include <vector>
 
 #include "core/deeglobal.h"
-#include "core/singleton.h"
 
 namespace Dee {
   
-  class Application;
-  class Keyboard;
-#ifdef LINUX
-  class X11Bridge;
-#endif
-
-class __DeeExport__ InputHandler : public Singleton<InputHandler> {
+  class AbstractSignal;
+  template <typename... Args> class Signal;
   
-  friend class Application; // for clearState()
-#ifdef LINUX
-  friend class X11Bridge; // for keyPressEvent()
-#endif
-
+/**
+ * \ingroup Core
+ * @{
+ * 
+ * This is the base class for the signals-and-slots system.
+ * 
+ * In order to be able to implement your own slots you need to derive
+ * this class.
+ * 
+ * \sa Signal.
+ */
+class __DeeExport__ Object {
+  
+  template <typename... Args>
+    friend class Signal;
+  
 public:
-  /**
-   * \cond HIDDEN_DOC
-   * A constructor.
-   * This constructor is disabled by Singleton.
-   */
-  InputHandler();
   
   /**
-   * A destructor.
+   * The constructor.
    */
-  virtual ~InputHandler();
-  /**
-   * \endcond
-   */
+  Object() = default;
   
   /**
-   * Gives access to the keyboard state.
+   * The destructor.
    * 
-   * \return Keyboard pointer.
+   * The destructor removes all connections.
    */
-  inline const Keyboard* keyboard() const {
-    return __keyboard;
-  }
+  virtual ~Object();
   
 private:
-  void clearState();
-  void keyPressEvent(unsigned key);
-  void keyReleaseEvent(unsigned key);
+  void addSender(AbstractSignal* sender);
+  void removeSender(AbstractSignal* sender);
   
-  Keyboard * __keyboard;
-
-};
+  void __disconnectAll();
+  
+  std::vector<AbstractSignal*> __senders;
+  
+}; /** @} */
 
 } /* namespace Dee */
 
-#endif // INPUTHANDLER_H
+#endif // EVENTFUL_H

@@ -38,6 +38,8 @@ void InputHandler::keyPressEvent(unsigned int key) {
   __keyboard->keyPressEvent(key);
 }
 
-
+void InputHandler::keyReleaseEvent(unsigned int key) {
+  __keyboard->keyReleaseEvent(key);
+}
 
 } /* namespace Dee */

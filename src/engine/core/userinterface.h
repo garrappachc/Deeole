@@ -1,5 +1,5 @@
 /*
- * eventful.h
+ * userinterface.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,58 +17,36 @@
  *
  */
 
-#ifndef EVENTFUL_H
-#define EVENTFUL_H
-
-#include <vector>
+#ifndef USERINTERFACE_H
+#define USERINTERFACE_H
 
 #include "core/deeglobal.h"
 
 namespace Dee {
   
-  class AbstractSignal;
-  template <typename... Args> class Signal;
-  
+  class Application;
+
 /**
- * \ingroup Core
- * @{
- * 
- * This is the base class for the signals-and-slots system.
- * 
- * In order to be able to implement your own slots you need to derive
- * this class.
- * 
- * \sa Signal.
+ * \cond HIDDEN_DOC
  */
-class __DeeExport__ Eventful {
+class __DeeHide__ UserInterface {
   
-  template <typename... Args>
-    friend class Signal;
+  friend class Application;
   
 public:
-  
-  /**
-   * The constructor.
-   */
-  Eventful() = default;
-  
-  /**
-   * The destructor.
-   * 
-   * The destructor removes all connections.
-   */
-  virtual ~Eventful();
+  UserInterface() = delete;
   
 private:
-  void addSender(AbstractSignal* sender);
-  void removeSender(AbstractSignal* sender);
+  static void init();
+  static void processEvents();
+  static void close();
   
-  void __disconnectAll();
-  
-  std::vector<AbstractSignal*> __senders;
-  
-}; /** @} */
+};
+
+/**
+ * \endcond
+ */
 
 } /* namespace Dee */
 
-#endif // EVENTFUL_H
+#endif // USERINTERFACE_H

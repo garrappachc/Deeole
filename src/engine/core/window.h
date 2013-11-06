@@ -24,7 +24,7 @@
 
 #include "core/deeglobal.h"
 
-#include "core/eventful.h"
+#include "core/object.h"
 #include "core/signal.h"
 
 namespace Dee {
@@ -41,7 +41,7 @@ namespace Dee {
  * To access the main application window, call `Application::window()`.
  */
 class __DeeExport__ Window :
-    public Eventful {
+    public Object {
   
 public:
   
@@ -71,11 +71,11 @@ public:
   DeeSlot show();
   
   /**
-   * Hides the window.
+   * Closes the window.
    * 
    * \sa show().
    */
-  DeeSlot hide();
+  DeeSlot close();
   
   /**
    * Sets the window name.
@@ -134,6 +134,14 @@ public:
    */
   inline const std::string& name() const {
     return __name;
+  }
+  
+  inline int x() const {
+    return __x;
+  }
+  
+  inline int y() const {
+    return __y;
   }
   
   /**
@@ -197,7 +205,7 @@ protected:
    */
   
   /**
-   * Called just after show() or hide() are called.
+   * Called when show() or hide() are called.
    * 
    * Implement this function to show and hide the window.
    * 
@@ -207,7 +215,7 @@ protected:
   virtual void updateVisibility(bool visible) = 0;
   
   /**
-   * Called just after setName() is called.
+   * Called when setName() is called.
    * 
    * Implement this function to update the window's title bar.
    * 
@@ -216,7 +224,7 @@ protected:
   virtual void updateName(const std::string& name) = 0;
   
   /**
-   * Called just after setWidth(), setHeight() or setSize() are called.
+   * Called when setWidth(), setHeight() or setSize() are called.
    * 
    * Implement this function to update the window on the screen.
    * 
@@ -226,7 +234,7 @@ protected:
   virtual void updateSize(int width, int height) = 0;
   
   /**
-   * Called just after setFullscreen() is called.
+   * Called when setFullscreen() is called.
    * 
    * This function may end in failure, and then it should return false.
    * It everything run properly and the window _is_ fullscreen, return
@@ -235,12 +243,35 @@ protected:
   virtual bool updateFullscreen(bool fullscreen) = 0;
   
   /**
+   * Override this function to receive external resize notifications.
+   * Call the base implementation to have the size updated.
+   * 
+   * \param width The new width.
+   * \param height The new height.
+   */
+  virtual void resizeEvent(int width, int height);
+  
+  /**
+   * Override this function to receive external show notifications.
+   * Call the base implementation to have the visibility updated.
+   */
+  virtual void showEvent();
+  
+  /**
+   * Override this function to receive external close notifications.
+   * Call the base implementation to have the visibility updated.
+   */
+  virtual void closeEvent();
+  
+  /**
    * \endcond
    */
   
 private:
   
   std::string __name;
+  int         __x;
+  int         __y;
   int         __width;
   int         __height;
   bool        __visible;

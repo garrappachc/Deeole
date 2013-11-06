@@ -38,7 +38,7 @@ public:
   static void processEvents();
   
   static GLXFBConfig getBestFbConfig();
-  static void registerWindow(::Window handle, Window* window);
+  static void registerWindow(::Window handle);
   static GLXContext glXCreateContextAttribsARB(Display* display, GLXFBConfig fbConfig,
                                                GLXContext shareContext, Bool direct,
                                                const int* attribs);

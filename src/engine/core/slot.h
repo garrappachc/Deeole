@@ -27,7 +27,7 @@
 
 namespace Dee {
   
-  class Eventful;
+  class Object;
   
 /**
  * \cond HIDDEN_DOC
@@ -63,10 +63,10 @@ template <typename... Args>
   class __DeeHide__ EventfulSlotCaller :
     public AbstractSlotCaller<Args...> {
       
-    using FunctionType = void (Eventful::*)(Args...);
+    using FunctionType = void (Object::*)(Args...);
      
   public:
-    EventfulSlotCaller(Eventful* receiver, FunctionType function) :
+    EventfulSlotCaller(Object* receiver, FunctionType function) :
         __receiver(receiver),
         __function(function) {}
     
@@ -78,7 +78,7 @@ template <typename... Args>
       (__receiver->*__function)(args...);
     }
     
-    Eventful* receiver() {
+    Object* receiver() {
       return __receiver;
     }
     
@@ -92,7 +92,7 @@ template <typename... Args>
         (__receiver->*__function)(std::get<S>(args) ...);
       }
     
-    Eventful*    __receiver;
+    Object*    __receiver;
     FunctionType __function;
   };
 
@@ -140,7 +140,7 @@ template <typename... Args>
   class __DeeHide__ SlotData :
     public AbstractSlotData {
     
-    using FunctionType = void (Eventful::*)(Args...);
+    using FunctionType = void (Object::*)(Args...);
     
   public:
     SlotData(AbstractSlotCaller<Args...>* caller, Args&&... args) :
@@ -160,10 +160,10 @@ template <typename... Args>
 template <typename... Args>
   class __DeeHide__ Slot {
     
-    using FunctionType = void (Eventful::*)(Args...);
+    using FunctionType = void (Object::*)(Args...);
     
   public:
-    Slot(ConnectionType type, Eventful* receiver,
+    Slot(ConnectionType type, Object* receiver,
          FunctionType function) :
         __connectionType(type),
         __caller(new EventfulSlotCaller<Args...>(receiver, function)) {}
@@ -184,7 +184,7 @@ template <typename... Args>
           __caller->call(std::forward<Args>(args)...);
     }
     
-    Eventful* receiver() {
+    Object* receiver() {
       auto c = dynamic_cast<EventfulSlotCaller<Args...>*>(__caller);
       if (c)
         return c->receiver();

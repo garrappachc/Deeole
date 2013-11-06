@@ -18,6 +18,7 @@
  */
 
 #include <cstring>
+#include <iostream>
 
 #include "keyboard.h"
 
@@ -37,6 +38,10 @@ void Keyboard::clearState() {
 
 void Keyboard::keyPressEvent(unsigned int key) {
   __state[key] = true;
+}
+
+void Keyboard::keyReleaseEvent(unsigned int key) {
+  __state[key] = false;
 }
 
 

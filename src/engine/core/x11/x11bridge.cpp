@@ -73,6 +73,10 @@ void X11Bridge::processEvents() {
         deeApp->input()->keyPressEvent(event.xkey.keycode);
         break;
         
+      case KeyRelease:
+        deeApp->input()->keyReleaseEvent(event.xkey.keycode);
+        break;
+      
       case ConfigureNotify:
         int w = event.xconfigure.width;
         int h = event.xconfigure.height;
@@ -108,7 +112,7 @@ GLXFBConfig X11Bridge::getBestFbConfig() {
                                              fbAttribs, &numConfigs);
   DeeAssert(fbConfigs);
   
-  Logger::debug("GLX: dound %i configs.", numConfigs);
+  Logger::debug("GLX: found %i configs.", numConfigs);
   
   /* Choose the best configuration */
   int bestFbc = -1, worstFbc = -1, bestNumSamp = -1, worstNumSamp = 999;
@@ -135,7 +139,7 @@ GLXFBConfig X11Bridge::getBestFbConfig() {
   return bestFbConfig;
 }
 
-void X11Bridge::registerWindow(::Window handle, Window* window) {
+void X11Bridge::registerWindow(::Window handle) {
   XSetWMProtocols(X11::display(), handle, &X11::__wmCloseMessage(), 1);
 }
 

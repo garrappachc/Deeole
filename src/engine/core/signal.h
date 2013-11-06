@@ -24,7 +24,7 @@
 
 #include "core/deeglobal.h"
 
-#include "core/eventful.h"
+#include "core/object.h"
 #include "core/slot.h"
 
 namespace Dee {
@@ -34,7 +34,7 @@ namespace Dee {
  */
 class __DeeHide__ AbstractSignal {
 public:
-  virtual void disconnect(Eventful* receiver) = 0;
+  virtual void disconnect(Object* receiver) = 0;
 };
 /**
  * \endcond
@@ -58,7 +58,7 @@ template <typename... Args>
   class __DeeExport__ Signal:
     public AbstractSignal {
     
-    using SlotFunctionType = void (Eventful::*)(Args...);
+    using SlotFunctionType = void (Object::*)(Args...);
     using SlotType         = Slot<Args...>;
     
   public:
@@ -98,7 +98,7 @@ template <typename... Args>
      * \sa disconnect() and emit.
      */
     template <typename CustomFunctionType>
-      void connect(Eventful* receiver, CustomFunctionType slot,
+      void connect(Object* receiver, CustomFunctionType slot,
                    ConnectionType type = AutoConnection) {
         static_assert(std::is_member_function_pointer<CustomFunctionType>::value,
                       "Slot must be member function pointer!");
@@ -146,7 +146,7 @@ template <typename... Args>
      * 
      * \param receiver The slots receiver.
      */
-    void disconnect(Eventful* receiver) override {
+    void disconnect(Object* receiver) override {
       auto it = __slots.begin();
       while (it != __slots.end()) {
         if ((*it)->receiver() == receiver) {
@@ -167,7 +167,7 @@ template <typename... Args>
      * \param slot The slot.
      */
     template <typename CustomFunctionType>
-      void disconnect(Eventful* receiver, CustomFunctionType slot) {
+      void disconnect(Object* receiver, CustomFunctionType slot) {
         auto it = __slots.begin();
         while (it != __slots.end()) {
           if ((*it)->receiver() == receiver && (*it)->function() == slot) {

@@ -17,23 +17,44 @@
  *
  */
 
+#include "core/inputhandler.h"
 #include "core/slotqueue.h"
+#include "core/userinterface.h"
+#include "core/window.h"
 #include "utils/logger.h"
+
+#ifdef LINUX
+# include "core/x11/x11window.h"
+#endif
 
 #include "application.h"
 
 namespace Dee {
-  
+
 Application::Application(int argc, char** argv) :
     aboutToQuit(QueuedConnection),
+    beforeRender(DirectConnection),
+    afterRender(DirectConnection),
+    __inputHandler(new InputHandler()),
     __slotQueue(new SlotQueue),
     __isRunning(false),
     __exitCode(0) {
+  
+  UserInterface::init();
+  
+#ifdef LINUX
+  __window = new X11Window("Deeole");
+#endif
+  __window->closed.connect(this, &Application::quit);
+  
   Logger::debug("Application: initialized.");
 }
 
 Application::~Application() {
+  delete __window;
   delete __slotQueue;
+  
+  UserInterface::close();
   
   Logger::debug("Application: destructed.");
 }
@@ -41,9 +62,17 @@ Application::~Application() {
 int Application::run() {
   Logger::debug("Application: running...");
   
+  __window->show();
+  __window->swapBuffers();
+  
   __isRunning = true;
   while (__isRunning) {
+    UserInterface::processEvents();
+    emit beforeRender();
+    // render
+    emit afterRender();
     __slotQueue->processSlots();
+    __window->swapBuffers();
   }
   
   emit aboutToQuit();

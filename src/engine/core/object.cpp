@@ -1,5 +1,5 @@
 /*
- * eventful.cpp
+ * object.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,15 +19,15 @@
 
 #include "core/signal.h"
 
-#include "eventful.h"
+#include "object.h"
 
 namespace Dee {
   
-Eventful::~Eventful() {
+Object::~Object() {
   __disconnectAll();
 }
 
-void Eventful::addSender(AbstractSignal* sender) {
+void Object::addSender(AbstractSignal* sender) {
   for (AbstractSignal* s: __senders)
     if (s == sender)
       return;
@@ -35,7 +35,7 @@ void Eventful::addSender(AbstractSignal* sender) {
   __senders.push_back(sender);
 }
 
-void Eventful::removeSender(AbstractSignal* sender) {
+void Object::removeSender(AbstractSignal* sender) {
   auto it = __senders.begin();
   
   while (it != __senders.end()) {
@@ -46,7 +46,7 @@ void Eventful::removeSender(AbstractSignal* sender) {
   }
 }
 
-void Eventful::__disconnectAll() {
+void Object::__disconnectAll() {
   for (AbstractSignal* s: __senders)
     s->disconnect(this);
   

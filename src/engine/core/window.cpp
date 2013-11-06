@@ -17,6 +17,8 @@
  *
  */
 
+#include "core/application.h"
+
 #include "window.h"
 
 namespace Dee {
@@ -26,11 +28,13 @@ Window::Window(std::string name) :
     __width(800),
     __height(600),
     __visible(false),
-    __fullscreen(false) {}
+    __fullscreen(false) {
+  Application::singleton().aboutToQuit.connect(this, &Window::close);
+}
 
 Window::~Window() {
   if (visible())
-    hide();
+    close();
 }
 
 DeeSlot Window::show() {
@@ -38,9 +42,14 @@ DeeSlot Window::show() {
   __visible = true;
   
   emit shown();
+  
+  if (__fullscreen) {
+    __fullscreen = false;
+    setFullscreen(true);
+  }
 }
 
-DeeSlot Window::hide() {
+DeeSlot Window::close() {
   updateVisibility(false);
   __visible = false;
   
@@ -55,17 +64,23 @@ void Window::setName(std::string name) {
 void Window::setWidth(int width) {
   updateSize(width, this->height());
   __width = width;
+  
+  emit resized(__width, __height);
 }
 
 void Window::setHeight(int height) {
   updateSize(this->width(), height);
   __height = height;
+  
+  emit resized(__width, __height);
 }
 
 void Window::setSize(int width, int height) {
   updateSize(width, height);
   __width = width;
   __height = height;
+  
+  emit resized(__width, __height);
 }
 
 void Window::setFullscreen(bool fullscreen) {
@@ -73,7 +88,21 @@ void Window::setFullscreen(bool fullscreen) {
     __fullscreen = fullscreen;
 }
 
+void Window::resizeEvent(int width, int height) {
+  __width = width;
+  __height = height;
+  
+  emit resized(width, height);
+}
 
+void Window::showEvent() {
+  __visible = true;
+  emit shown();
+}
 
+void Window::closeEvent() {
+  __visible = false;
+  emit closed();
+}
 
 } /* namespace Dee */

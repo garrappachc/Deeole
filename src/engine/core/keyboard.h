@@ -53,6 +53,7 @@ public:
 private:
   void clearState();
   void keyPressEvent(unsigned key);
+  void keyReleaseEvent(unsigned key);
   
   /* State of the keyboard */
   bool __state[0xFF];

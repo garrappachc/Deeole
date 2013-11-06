@@ -3,15 +3,16 @@ deeole_subdirectory_start(core)
 set (core_SRCS
   application.cpp
   deeglobal.cpp
-  eventful.cpp
   glbridge.cpp
   inputhandler.cpp
   keyboard.cpp
   mutex.cpp
+  object.cpp
   scopedmutex.cpp
   slotqueue.cpp
   thread.cpp
   timer.cpp
+  userinterface.cpp
   window.cpp
 )
 if (LINUX)
@@ -25,8 +26,8 @@ deeole_subdirectory_sources(core "${core_SRCS}")
 set (core_HEADERS
   application.h
   deeglobal.h
-  eventful.h
   mutex.h
+  object.h
   scopedmutex.h
   signal.h
   singleton.h
