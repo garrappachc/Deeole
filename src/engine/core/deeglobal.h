@@ -228,7 +228,7 @@ namespace Dee {
       Up       = 0x6F,
       PageUp   = 0x70,
       Left     = 0x71,
-      Rigt     = 0x72,
+      Right    = 0x72,
       Down     = 0x74,
       PageDown = 0x75,
       End      = 0x73,

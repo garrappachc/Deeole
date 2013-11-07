@@ -2,12 +2,16 @@ deeole_subdirectory_start(core)
 
 set (core_SRCS
   application.cpp
+  camera.cpp
   deeglobal.cpp
+  freecamera.cpp
   glbridge.cpp
   inputhandler.cpp
+  item.cpp
   keyboard.cpp
   mutex.cpp
   object.cpp
+  renderable.cpp
   scene.cpp
   scenemanager.cpp
   scopedmutex.cpp

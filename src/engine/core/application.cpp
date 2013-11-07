@@ -79,6 +79,7 @@ int Application::run() {
     UserInterface::processEvents();
     
     emit beforeRender();
+    
     __sceneManager->render();
     emit afterRender();
     
