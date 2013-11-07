@@ -55,7 +55,7 @@ public:
   /**
    * The destructor.
    * 
-   * The destructor removes all connections.
+   * The destructor removes all connections and emits the aboutToBeDeleted() signal.
    */
   virtual ~Object();
   

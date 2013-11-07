@@ -18,6 +18,7 @@
  */
 
 #include "core/application.h"
+#include "utils/logger.h"
 
 #include "window.h"
 
@@ -84,8 +85,12 @@ void Window::setSize(int width, int height) {
 }
 
 void Window::setFullscreen(bool fullscreen) {
-  if (updateFullscreen(fullscreen))
+  if (visible()) {
+    if (updateFullscreen(fullscreen))
+      __fullscreen = fullscreen;
+  } else {
     __fullscreen = fullscreen;
+  }
 }
 
 void Window::resizeEvent(int width, int height) {

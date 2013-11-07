@@ -6,23 +6,12 @@
 #include "core/object.h"
 #include "core/signal.h"
 #include "core/timer.h"
-#include <core/window.h>
-
-class Listener : public Dee::Object {
-public:
-  DeeSlot timeout() {
-    static int counter = 0;
-    counter += 1;
-    
-    std::cout << "Timeout no. " << counter << std::endl;
-    
-    if (counter == 5)
-      deeApp->quit();
-  }
-};
+#include "core/window.h"
 
 int main(int argc, char** argv) {
   Dee::Application app(argc, argv);
+  app.window()->setFullscreen(true);
+  
   app.beforeRender.connect([=]() {
     const Dee::Keyboard* keyboard = Dee::Application::input()->keyboard();
     
@@ -44,12 +33,5 @@ int main(int argc, char** argv) {
     }
   });
   
-  Listener listener;
-  
-  Dee::Timer timer;
-  timer.timeout.connect(&listener, &Listener::timeout);
-  timer.setTimeout(1000);
-  
-  timer.start();
   return app.run();
 }

@@ -25,6 +25,7 @@
 namespace Dee {
   
   class Application;
+  class Window;
 
 /**
  * \cond HIDDEN_DOC
@@ -37,6 +38,7 @@ public:
   UserInterface() = delete;
   
 private:
+  static Window* getPlatformWindow();
   static void init();
   static void processEvents();
   static void close();

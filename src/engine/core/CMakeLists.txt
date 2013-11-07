@@ -8,6 +8,8 @@ set (core_SRCS
   keyboard.cpp
   mutex.cpp
   object.cpp
+  scene.cpp
+  scenemanager.cpp
   scopedmutex.cpp
   slotqueue.cpp
   thread.cpp

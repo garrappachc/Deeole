@@ -17,13 +17,22 @@
  *
  */
 
+#include "core/window.h"
+
 #include "userinterface.h"
 
 #ifdef LINUX
 # include "core/x11/x11bridge.h"
+# include "core/x11/x11window.h"
 #endif
 
 namespace Dee {
+  
+Dee::Window* UserInterface::getPlatformWindow() {
+#ifdef LINUX
+  return new X11Window();
+#endif
+}
 
 void UserInterface::init() {
 #ifdef LINUX

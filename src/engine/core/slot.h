@@ -57,16 +57,16 @@ template <typename... Args>
 };
 
 /**
- * Template class, used to call slots on eventful objects.
+ * Template class, used to call slots on objects.
  */
 template <typename... Args>
-  class __DeeHide__ EventfulSlotCaller :
+  class __DeeHide__ ObjectSlotCaller :
     public AbstractSlotCaller<Args...> {
       
     using FunctionType = void (Object::*)(Args...);
      
   public:
-    EventfulSlotCaller(Object* receiver, FunctionType function) :
+    ObjectSlotCaller(Object* receiver, FunctionType function) :
         __receiver(receiver),
         __function(function) {}
     
@@ -166,7 +166,7 @@ template <typename... Args>
     Slot(ConnectionType type, Object* receiver,
          FunctionType function) :
         __connectionType(type),
-        __caller(new EventfulSlotCaller<Args...>(receiver, function)) {}
+        __caller(new ObjectSlotCaller<Args...>(receiver, function)) {}
     
     template <typename LambdaType>
       Slot(ConnectionType type, LambdaType lambda):
@@ -185,7 +185,7 @@ template <typename... Args>
     }
     
     Object* receiver() {
-      auto c = dynamic_cast<EventfulSlotCaller<Args...>*>(__caller);
+      auto c = dynamic_cast<ObjectSlotCaller<Args...>*>(__caller);
       if (c)
         return c->receiver();
       else
@@ -193,7 +193,7 @@ template <typename... Args>
     }
     
     FunctionType function() {
-      auto c = dynamic_cast<EventfulSlotCaller<Args...>*>(__caller);
+      auto c = dynamic_cast<ObjectSlotCaller<Args...>*>(__caller);
       if (c)
         return c->function();
       else

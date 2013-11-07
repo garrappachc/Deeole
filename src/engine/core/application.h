@@ -29,6 +29,7 @@
 namespace Dee {
   
   class InputHandler;
+  class SceneManager;
   class SlotQueue;
   class Window;
 
@@ -114,6 +115,20 @@ public:
   DeeSlot terminate();
   
   /**
+   * Sets the desired scene manager as the working one.
+   * 
+   * You can subclass SceneManager to implement your own scene managing
+   * mechanisms. There must always exist at least one scene manager,
+   * so passing nullptr will set back the default scene manager.
+   * 
+   * This function is thread-safe.
+   * 
+   * \param manager SceneManager instance pointer.
+   * \sa SceneManager and sceneManager().
+   */
+  void setSceneManager(SceneManager* manager);
+  
+  /**
    * Processes all pending slots until the queue is empty.
    */
   static void processEvents();
@@ -124,6 +139,15 @@ public:
   
   inline static Window* window() {
     return singleton().__window;
+  }
+  
+  /**
+   * Obtains the currently working scene manager.
+   * 
+   * \return SceneManager instance pointer.
+   */
+  inline SceneManager* sceneManager() {
+    return __sceneManager;
   }
   
   // signals
@@ -140,8 +164,13 @@ private:
   SlotQueue*    __slotQueue;
   Window*       __window;
   
+  SceneManager* __sceneManager; /**< Currently working scene manager */
+  
   bool       __isRunning;
   int        __exitCode;
+  
+  static SceneManager* __defaultSceneManager; /**< Default SceneManager instance
+                                                   pointer. */
 
 }; /** @} */
 

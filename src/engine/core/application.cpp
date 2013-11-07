@@ -18,6 +18,9 @@
  */
 
 #include "core/inputhandler.h"
+#include "core/mutex.h"
+#include "core/scenemanager.h"
+#include "core/scopedmutex.h"
 #include "core/slotqueue.h"
 #include "core/userinterface.h"
 #include "core/window.h"
@@ -37,25 +40,31 @@ Application::Application(int argc, char** argv) :
     afterRender(DirectConnection),
     __inputHandler(new InputHandler()),
     __slotQueue(new SlotQueue),
+    __window(nullptr),
+    __sceneManager(nullptr),
     __isRunning(false),
     __exitCode(0) {
   
   UserInterface::init();
   
-#ifdef LINUX
-  __window = new X11Window("Deeole");
-#endif
+  __window = UserInterface::getPlatformWindow();
   __window->closed.connect(this, &Application::quit);
+  __window->setName("Deeole");
+  
+  __sceneManager = new SceneManager();
+  __defaultSceneManager = __sceneManager;
   
   Logger::debug("Application: initialized.");
 }
 
 Application::~Application() {
   delete __window;
-  delete __slotQueue;
   
   UserInterface::close();
   
+  delete __slotQueue;
+  
+  delete __defaultSceneManager;
   Logger::debug("Application: destructed.");
 }
 
@@ -68,9 +77,11 @@ int Application::run() {
   __isRunning = true;
   while (__isRunning) {
     UserInterface::processEvents();
+    
     emit beforeRender();
-    // render
+    __sceneManager->render();
     emit afterRender();
+    
     __slotQueue->processSlots();
     __window->swapBuffers();
   }
@@ -90,8 +101,20 @@ DeeSlot Application::terminate() {
   std::terminate();
 }
 
+void Application::setSceneManager(SceneManager* manager) {
+  static Mutex mutex;
+  ScopedMutex m(&mutex);
+  
+  if (manager)
+    __sceneManager = manager;
+  else
+    __sceneManager = __defaultSceneManager;
+}
+
 void Application::processEvents() {
   deeApp->__slotQueue->processSlots();
 }
+
+SceneManager* Application::__defaultSceneManager = nullptr;
 
 } /* namespace Dee */
