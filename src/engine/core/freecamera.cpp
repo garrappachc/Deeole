@@ -26,12 +26,45 @@
 
 namespace Dee {
   
+FreeCamera::FreeCamera() :
+    __angle({0.0f, 0.0f, 0.0f}) {}
+
+void FreeCamera::move(const Vector3d& vector) {
+  eye() += Vector3d(
+    (lookAt().x() * vector.z()) - (lookAt().z() * vector.x()),
+    vector.y(),
+    (lookAt().z() * vector.z()) + (lookAt().x() * vector.x())
+  );
+}
+
+void FreeCamera::rotate(const Vector3d& vector) {
+  __angle -= (vector / 100);
+  __angle[1] = Dee::bound(deg2Rad(-90), __angle.y(), deg2Rad(90));
+  
+  setLookAt({
+    cos(__angle.x() - 90),
+    sin(__angle.y()),
+    sin(__angle.x() - 90)
+  });
+  
+  lookAt().normalize();
+}
+
 void FreeCamera::setProjection() const {
   glMatrixMode(GL_PROJECTION);
   
   GLdouble aspect = static_cast<GLdouble>(deeApp->window()->width()) /
                     static_cast<GLdouble>(deeApp->window()->height());
   gluPerspective(fovy(), aspect, zNear(), zFar());
+}
+
+void FreeCamera::setView() const {
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  
+  gluLookAt(eye().x(), eye().y(), eye().z(),
+            eye().x() + lookAt().x(), eye().y() + lookAt().y(), eye().z() + lookAt().z(),
+            up().x(), up().y(), up().z());
 }
 
 } /* namespace Dee */

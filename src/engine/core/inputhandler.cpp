@@ -18,20 +18,22 @@
  */
 
 #include "core/keyboard.h"
+#include "core/mouse.h"
 
 #include "inputhandler.h"
 
 namespace Dee {
-  
+
 InputHandler::InputHandler() :
-    __keyboard(new Keyboard()) {}
+    __keyboard(new Keyboard()),
+    __mouse(new Mouse()) {}
 
 InputHandler::~InputHandler() {
   delete __keyboard;
 }
 
 void InputHandler::clearState() {
-  __keyboard->clearState();
+  __mouse->clearDiff();
 }
 
 void InputHandler::keyPressEvent(unsigned int key) {
@@ -40,6 +42,10 @@ void InputHandler::keyPressEvent(unsigned int key) {
 
 void InputHandler::keyReleaseEvent(unsigned int key) {
   __keyboard->keyReleaseEvent(key);
+}
+
+void InputHandler::mouseMotionEvent(int x, int y) {
+  __mouse->motionEvent(x, y);
 }
 
 } /* namespace Dee */

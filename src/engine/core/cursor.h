@@ -1,5 +1,5 @@
 /*
- * userinterface.cpp
+ * cursor.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,47 +17,20 @@
  *
  */
 
-#include "core/cursor.h"
-#include "core/window.h"
+#ifndef CURSOR_H
+#define CURSOR_H
 
-#include "userinterface.h"
-
-#ifdef LINUX
-# include "core/x11/x11bridge.h"
-# include "core/x11/x11cursor.h"
-# include "core/x11/x11window.h"
-#endif
+#include "core/deeglobal.h"
 
 namespace Dee {
+
+class Cursor {
   
-Dee::Window* UserInterface::getPlatformWindow() {
-#ifdef LINUX
-  return new X11Window();
-#endif
-}
-
-Dee::Cursor* UserInterface::getPlatformCursor() {
-#ifdef LINUX
-  return new X11Cursor();
-#endif
-}
-
-void UserInterface::init() {
-#ifdef LINUX
-  X11Bridge::openDisplay();
-#endif
-}
-
-void UserInterface::processEvents() {
-#ifdef LINUX
-  X11::processEvents();
-#endif
-}
-
-void UserInterface::close() {
-#ifdef LINUX
-  X11::closeDisplay();
-#endif
-}
+public:
+  virtual void setPosition(int x, int y) = 0;
+  
+};
 
 } /* namespace Dee */
+
+#endif // CURSOR_H

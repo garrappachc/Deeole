@@ -52,10 +52,14 @@ public:
   /**
    * The default consructor.
    * 
-   * The position of camera is (0, 0, 0) and the _lookAt_ vector is (0, -1, 0).
+   * The position of camera is (0, 0, 0) and the _lookAt_ vector is (0, 0, -1).
    * \sa move(), position() and lookAt().
    */
-  Camera();
+  Camera(
+    Point3d eye = Point3d(0.0f, 0.0f, 0.0f),
+    Vector3d lookAt = Vector3d(0.0f, 0.0f, 1.0f),
+    Vector3d up = Vector3d(0.0f, 1.0f, 0.0f)
+  );
   
   /**
    * The destructor.
@@ -127,6 +131,18 @@ public:
   }
   
   /**
+   * Gives access to the position of the camera.
+   * 
+   * The _eye_ point describes the exact location of the camera.
+   * 
+   * \return The _eye_ point.
+   * \sa setEye() and move().
+   */
+  inline Point3d& eye() {
+    return __eye;
+  }
+  
+  /**
    * Gives access to the _lookAt_ vector of the camera.
    * 
    * The _lookAt_ attribute describes the direction of the view of the
@@ -136,6 +152,19 @@ public:
    * \sa setLookAt() and rotate().
    */
   inline const Vector3d& lookAt() const {
+    return __lookAt;
+  }
+  
+  /**
+   * Gives access to the _lookAt_ vector of the camera.
+   * 
+   * The _lookAt_ attribute describes the direction of the view of the
+   * camera.
+   * 
+   * \return The _lookAt_ vector.
+   * \sa setLookAt() and rotate().
+   */
+  inline Vector3d& lookAt() {
     return __lookAt;
   }
   

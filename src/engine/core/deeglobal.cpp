@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include <exception>
+#include <cmath>
 
 #include "deeglobal.h"
 
@@ -28,4 +29,16 @@ void dee_assert(const char* cond, const char* file, int line) {
     "  File: " << file << std::endl <<
     "  Line: " << line << std::endl;
   std::terminate();
+}
+
+namespace Dee {
+
+float sin(float angle) {
+  return static_cast<float>(::sin(static_cast<double>(angle)));
+}
+
+float cos(float angle) {
+  return static_cast<float>(::cos(static_cast<double>(angle)));
+}
+
 }

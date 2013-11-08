@@ -1,5 +1,5 @@
 /*
- * keyboard.h
+ * mouse.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,18 +17,20 @@
  *
  */
 
-#ifndef KEYBOARD_H
-#define KEYBOARD_H
+#ifndef MOUSE_H
+#define MOUSE_H
 
 #include "core/deeglobal.h"
+
+#include "core/vector.h"
 
 namespace Dee {
   
   class InputHandler;
 
-class __DeeExport__ Keyboard {
-  
-  friend class InputHandler; // events
+class __DeeExport__ Mouse {
+
+  friend class InputHandler; // clearState() and events
   
 public:
   /**
@@ -37,30 +39,46 @@ public:
    * One should not create instances of this class on his own,
    * unless he knows what he is doing.
    */
-  Keyboard();
+  Mouse();
   /**
    * \endcond
    */
   
-  /**
-   * Checks whether particular key is pressed at the moment or not.
-   * 
-   * \param key Key.
-   * \return True or false.
-   */
-  bool keyDown(Key::Code key) const;
+  inline int x() const {
+    return __x;
+  }
+  
+  inline int y() const {
+    return __y;
+  }
+  
+  inline int dx() const {
+    return __dx;
+  }
+  
+  inline int dy() const {
+    return __dy;
+  }
+  
+  inline Vector3d motion() const {
+    return std::move(Vector3d(
+      static_cast<float>(dx()),
+      static_cast<float>(dy()),
+      .0f
+    ));
+  }
   
 private:
-  void keyPressEvent(unsigned key);
-  void keyReleaseEvent(unsigned key);
+  void motionEvent(int x, int y);
+  void clearDiff();
   
-  void __clearState();
-  
-  /* State of the keyboard */
-  bool __state[0xFF];
+  int __x;
+  int __y;
+  int __dx;
+  int __dy;
 
 };
 
 } /* namespace Dee */
 
-#endif // KEYBOARD_H
+#endif // MOUSE_H

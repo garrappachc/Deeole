@@ -25,6 +25,7 @@
 namespace Dee {
   
   class Application;
+  class Cursor;
   class Window;
 
 /**
@@ -39,6 +40,8 @@ public:
   
 private:
   static Window* getPlatformWindow();
+  static Cursor* getPlatformCursor();
+  
   static void init();
   static void processEvents();
   static void close();

@@ -28,6 +28,13 @@ namespace Dee {
 
 class __DeeExport__ FreeCamera : public Camera {
   
+public:
+  FreeCamera();
+  
+  void move(const Vector3d& vector) override;
+  
+  void rotate(const Vector3d& vector) override;
+  
 protected:
   
   /**
@@ -38,7 +45,10 @@ protected:
   /**
    * Prepares the _modelview_ matrix.
    */
-//   void setView() const override;
+  void setView() const override;
+
+private:
+  Vector3d __angle;
   
   
 };

@@ -1,5 +1,5 @@
 /*
- * userinterface.cpp
+ * mouse.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,47 +17,26 @@
  *
  */
 
-#include "core/cursor.h"
-#include "core/window.h"
-
-#include "userinterface.h"
-
-#ifdef LINUX
-# include "core/x11/x11bridge.h"
-# include "core/x11/x11cursor.h"
-# include "core/x11/x11window.h"
-#endif
+#include "mouse.h"
 
 namespace Dee {
   
-Dee::Window* UserInterface::getPlatformWindow() {
-#ifdef LINUX
-  return new X11Window();
-#endif
+Mouse::Mouse() :
+    __x(0),
+    __y(0),
+    __dx(0),
+    __dy(0) {}
+
+void Mouse::motionEvent(int x, int y) {
+  __dx = __x - x;
+  __x = x;
+  
+  __dy = y - __y;
+  __y = y;
 }
 
-Dee::Cursor* UserInterface::getPlatformCursor() {
-#ifdef LINUX
-  return new X11Cursor();
-#endif
-}
-
-void UserInterface::init() {
-#ifdef LINUX
-  X11Bridge::openDisplay();
-#endif
-}
-
-void UserInterface::processEvents() {
-#ifdef LINUX
-  X11::processEvents();
-#endif
-}
-
-void UserInterface::close() {
-#ifdef LINUX
-  X11::closeDisplay();
-#endif
+void Mouse::clearDiff() {
+  __dx = __dy = 0;
 }
 
 } /* namespace Dee */

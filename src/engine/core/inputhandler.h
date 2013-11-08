@@ -27,6 +27,8 @@ namespace Dee {
   
   class Application;
   class Keyboard;
+  class Mouse;
+  
 #ifdef LINUX
   class X11Bridge;
 #endif
@@ -63,12 +65,18 @@ public:
     return __keyboard;
   }
   
+  inline const Mouse* mouse() const {
+    return __mouse;
+  }
+  
 private:
   void clearState();
   void keyPressEvent(unsigned key);
   void keyReleaseEvent(unsigned key);
+  void mouseMotionEvent(int x, int y);
   
-  Keyboard * __keyboard;
+  Keyboard* __keyboard;
+  Mouse*    __mouse;
 
 };
 

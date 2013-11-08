@@ -79,6 +79,10 @@ void X11Bridge::processEvents() {
       case KeyRelease:
         deeApp->input()->keyReleaseEvent(event.xkey.keycode);
         break;
+        
+      case MotionNotify:
+        deeApp->input()->mouseMotionEvent(event.xmotion.x, event.xmotion.y);
+        break;
       
       case ConfigureNotify:
         int w = event.xconfigure.width;

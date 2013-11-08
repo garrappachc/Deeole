@@ -62,6 +62,26 @@ typedef void DeeSlot;
 
 namespace Dee {
   
+  constexpr float Pi = 3.14159265359f;
+  
+  template <typename T>
+    float deg2Rad(const T& deg) {
+      static constexpr float coeff = Pi / 180.0f;
+      return deg * coeff;
+    }
+  
+  template <typename T>
+    T bound(const T& min, const T& value, const T& max) {
+      if (value < min)
+        return min;
+      if (value > max)
+        return max;
+      return value;
+    }
+  
+  float cos(float angle);
+  float sin(float angle);
+  
   /**
    * \ingroup Core
    * 

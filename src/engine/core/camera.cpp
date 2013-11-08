@@ -17,6 +17,7 @@
  *
  */
 
+#include <utility>
 #include <GL/gl.h>
 #include <GL/glu.h>
 
@@ -24,10 +25,10 @@
 
 namespace Dee {
 
-Camera::Camera() :
-    __eye{.0f, .0f, -1.0f},
-    __lookAt{.0f, .0f, 1.0f},
-    __up{.0f, 1.0f, .0f},
+Camera::Camera(Point3d eye, Vector3d lookAt, Vector3d up):
+    __eye(std::move(eye)),
+    __lookAt(std::move(lookAt)),
+    __up(std::move(up)),
     __fovy(90),
     __zNear(0.0),
     __zFar(1.0) {}
@@ -65,8 +66,7 @@ Camera::setProjection() const {
   glMatrixMode(GL_PROJECTION);
   glOrtho(-1.0, 1.0,
           -1.0, 1.0,
-          __zNear, __zFar);
-  
+          __zNear, __zFar);  
 }
 
 void

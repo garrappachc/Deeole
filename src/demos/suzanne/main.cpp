@@ -3,6 +3,7 @@
 #include "core/application.h"
 #include "core/inputhandler.h"
 #include "core/keyboard.h"
+#include "core/mouse.h"
 #include "core/object.h"
 #include "core/signal.h"
 #include "core/timer.h"
@@ -60,23 +61,21 @@ int main(int argc, char** argv) {
   app.beforeRender.connect([=, &camera]() {
     const Dee::Keyboard* keyboard = Dee::Application::input()->keyboard();
     
-    if (keyboard->keyDown(Dee::Key::Left))
-      camera.move({0.01f, 0.0f, 0.0f});
-    
-    if (keyboard->keyDown(Dee::Key::Right))
+    if (keyboard->keyDown(Dee::Key::A))
       camera.move({-0.01f, 0.0f, 0.0f});
     
-    if (keyboard->keyDown(Dee::Key::Up))
-      camera.move({0.0f, 0.01f, 0.0f});
+    if (keyboard->keyDown(Dee::Key::D))
+      camera.move({0.01f, 0.0f, 0.0f});
     
-    if (keyboard->keyDown(Dee::Key::Down))
-      camera.move({0.0f, -0.01f, 0.0f});
+    if (keyboard->keyDown(Dee::Key::S))
+      camera.move({0.0f, 0.0f, -0.01f});
     
-    if (keyboard->keyDown(Dee::Key::Minus))
-      camera.move({0.0f, 0.0f, -0.1f});
+    if (keyboard->keyDown(Dee::Key::W))
+      camera.move({0.0f, 0.0f, 0.01f});
     
-    if (keyboard->keyDown(Dee::Key::Equal))
-      camera.move({0.0f, 0.0f, 0.1f});
+    const Dee::Mouse* mouse = Dee::Application::input()->mouse();
+    camera.rotate(mouse->motion());
+    
   });
   
   Dee::Item item;

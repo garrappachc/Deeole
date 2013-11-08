@@ -17,6 +17,7 @@
  *
  */
 
+#include "core/cursor.h"
 #include "core/inputhandler.h"
 #include "core/mutex.h"
 #include "core/scenemanager.h"
@@ -25,10 +26,6 @@
 #include "core/userinterface.h"
 #include "core/window.h"
 #include "utils/logger.h"
-
-#ifdef LINUX
-# include "core/x11/x11window.h"
-#endif
 
 #include "application.h"
 
@@ -50,6 +47,8 @@ Application::Application(int argc, char** argv) :
   __window = UserInterface::getPlatformWindow();
   __window->closed.connect(this, &Application::quit);
   __window->setName("Deeole");
+  
+  __cursor = UserInterface::getPlatformCursor();
   
   __sceneManager = new SceneManager();
   __defaultSceneManager = __sceneManager;
@@ -73,6 +72,7 @@ int Application::run() {
   
   __window->show();
   __window->swapBuffers();
+  __cursor->setPosition(__window->width() / 2, __window->height() / 2);
   
   __isRunning = true;
   while (__isRunning) {
@@ -85,6 +85,8 @@ int Application::run() {
     
     __slotQueue->processSlots();
     __window->swapBuffers();
+    
+    __inputHandler->clearState();
   }
   
   emit aboutToQuit();

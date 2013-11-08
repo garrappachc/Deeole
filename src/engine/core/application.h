@@ -28,6 +28,7 @@
 
 namespace Dee {
   
+  class Cursor;
   class InputHandler;
   class SceneManager;
   class SlotQueue;
@@ -163,6 +164,7 @@ private:
   InputHandler* __inputHandler;
   SlotQueue*    __slotQueue;
   Window*       __window;
+  Cursor*       __cursor;
   
   SceneManager* __sceneManager; /**< Currently working scene manager */
   

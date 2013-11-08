@@ -46,10 +46,17 @@ class __DeeExport__ X11Window : public Window {
   friend class X11Bridge; // events
   
 public:
+  typedef ::Window     HandleType;
+  typedef ::GLXContext ContextType;
+  
   X11Window(std::string name = "");
   virtual ~X11Window();
   
   void swapBuffers() override;
+  
+  inline HandleType handle() const {
+    return __handle;
+  }
   
 protected:
   void updateVisibility(bool visible) override;
@@ -60,9 +67,6 @@ protected:
 private:
   void __setupWindow();
   void __destroyWindow();
-  
-  typedef ::Window     HandleType;
-  typedef ::GLXContext ContextType;
   
   HandleType __handle;
   ContextType __context;

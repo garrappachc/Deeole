@@ -1,5 +1,5 @@
 /*
- * userinterface.cpp
+ * x11cursor.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,47 +17,22 @@
  *
  */
 
-#include "core/cursor.h"
+#include <X11/X.h>
+
+#include "core/application.h"
 #include "core/window.h"
+#include "core/x11/x11bridge.h"
+#include "core/x11/x11window.h"
 
-#include "userinterface.h"
-
-#ifdef LINUX
-# include "core/x11/x11bridge.h"
-# include "core/x11/x11cursor.h"
-# include "core/x11/x11window.h"
-#endif
+#include "x11cursor.h"
 
 namespace Dee {
-  
-Dee::Window* UserInterface::getPlatformWindow() {
-#ifdef LINUX
-  return new X11Window();
-#endif
-}
 
-Dee::Cursor* UserInterface::getPlatformCursor() {
-#ifdef LINUX
-  return new X11Cursor();
-#endif
-}
-
-void UserInterface::init() {
-#ifdef LINUX
-  X11Bridge::openDisplay();
-#endif
-}
-
-void UserInterface::processEvents() {
-#ifdef LINUX
-  X11::processEvents();
-#endif
-}
-
-void UserInterface::close() {
-#ifdef LINUX
-  X11::closeDisplay();
-#endif
+void X11Cursor::setPosition(int x, int y) {
+  X11Window* window = dynamic_cast<X11Window*>(deeApp->window());
+  DeeAssert(window);
+  XWarpPointer(X11::display(), None, window->handle(), 0, 0, 0, 0, x, y);
+  XFlush(X11::display());
 }
 
 } /* namespace Dee */

@@ -100,12 +100,12 @@ template <typename T, unsigned N>
       };
     
     template <typename Operator, int ...S>
-      Vector __unpackOperator(Operator o, const Vector& other, __seq<S...>) {
+      Vector __unpackOperator(Operator o, const Vector& other, __seq<S...>) const {
         return Vector(o(__data[S], other.__data[S]) ...);
       }
     
     template <typename Operator, int ...S>
-      Vector __unpackOperator(Operator o, const T& scalar, __seq<S...>) {
+      Vector __unpackOperator(Operator o, const T& scalar, __seq<S...>) const {
         return Vector(o(__data[S], scalar) ...);
       }
     
@@ -252,7 +252,7 @@ template <typename T, unsigned N>
     float length() const {
       float len = 0;
       
-      for (T& t: __data)
+      for (const T& t: __data)
         len += (t * t);
       
       return sqrt(len);
@@ -374,7 +374,7 @@ template <typename T, unsigned N>
      * \param scalar The multiplying coefficient.
      * \return The new vector.
      */
-    Vector operator *(const T& scalar) {
+    Vector operator *(const T& scalar) const {
       return __unpackOperator(
         [](const T& a, const T& b) -> T {
           return a * b;
@@ -389,7 +389,7 @@ template <typename T, unsigned N>
      * \param scalar The divisor.
      * \return The new vector.
      */
-    Vector operator /(const T& scalar) {
+    Vector operator /(const T& scalar) const {
       return __unpackOperator(
         [](const T& a, const T& b) -> T {
           return a / b;

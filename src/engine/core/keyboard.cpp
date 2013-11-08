@@ -25,15 +25,11 @@
 namespace Dee {
   
 Keyboard::Keyboard() {
-  clearState();
+  __clearState();
 }
 
 bool Keyboard::keyDown(Key::Code key) const {
   return __state[key];
-}
-
-void Keyboard::clearState() {
-  memset(__state, 0, sizeof(__state));
 }
 
 void Keyboard::keyPressEvent(unsigned int key) {
@@ -42,6 +38,10 @@ void Keyboard::keyPressEvent(unsigned int key) {
 
 void Keyboard::keyReleaseEvent(unsigned int key) {
   __state[key] = false;
+}
+
+void Keyboard::__clearState() {
+  memset(__state, 0, sizeof(__state));
 }
 
 
