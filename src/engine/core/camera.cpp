@@ -29,9 +29,8 @@ Camera::Camera(Point3d eye, Vector3d lookAt, Vector3d up):
     __eye(std::move(eye)),
     __lookAt(std::move(lookAt)),
     __up(std::move(up)),
-    __fovy(90),
-    __zNear(0.0),
-    __zFar(1.0) {}
+    __zNear(0.1f),
+    __zFar(100.0f) {}
 
 Camera::~Camera() {}
 
@@ -62,15 +61,18 @@ Camera::setUp(Vector3d up) {
 }
 
 void
-Camera::setProjection() const {
+Camera::setProjection() {
+//   glMatrixMode(GL_PROJECTION);
+//   glOrtho(-1.0, 1.0,
+//           -1.0, 1.0,
+//           __zNear, __zFar);
+  projectionMatrix().ortho(-1.0f, 1.0f, -1.0f, 1.0f, __zNear, __zFar);
   glMatrixMode(GL_PROJECTION);
-  glOrtho(-1.0, 1.0,
-          -1.0, 1.0,
-          __zNear, __zFar);  
+  glLoadMatrixf(projectionMatrix());
 }
 
 void
-Camera::setView() const {
+Camera::setView() {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   

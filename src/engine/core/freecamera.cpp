@@ -27,7 +27,9 @@
 namespace Dee {
   
 FreeCamera::FreeCamera() :
-    __angle({0.0f, 0.0f, 0.0f}) {}
+    Camera(),
+    __angle({0.0f, 0.0f, 0.0f}),
+    __fovy(45.0f) {}
 
 void FreeCamera::move(const Vector3d& vector) {
   eye() += Vector3d(
@@ -50,15 +52,23 @@ void FreeCamera::rotate(const Vector3d& vector) {
   lookAt().normalize();
 }
 
-void FreeCamera::setProjection() const {
-  glMatrixMode(GL_PROJECTION);
+void FreeCamera::setProjection() {
+//   glMatrixMode(GL_PROJECTION);
+//   
+//   GLdouble aspect = static_cast<GLdouble>(deeApp->window()->width()) /
+//                     static_cast<GLdouble>(deeApp->window()->height());
+//   gluPerspective(__fovy, aspect, zNear(), zFar());
   
-  GLdouble aspect = static_cast<GLdouble>(deeApp->window()->width()) /
-                    static_cast<GLdouble>(deeApp->window()->height());
-  gluPerspective(fovy(), aspect, zNear(), zFar());
+  float aspect = static_cast<float>(deeApp->window()->width()) /
+                 static_cast<float>(deeApp->window()->height());
+                 
+  projectionMatrix().perspective(__fovy, aspect, zNear(), zFar());
+  
+  glMatrixMode(GL_PROJECTION);
+  glLoadMatrixf(projectionMatrix());
 }
 
-void FreeCamera::setView() const {
+void FreeCamera::setView() {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   

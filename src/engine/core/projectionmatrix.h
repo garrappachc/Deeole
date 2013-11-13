@@ -1,5 +1,5 @@
 /*
- * deeglobal.cpp
+ * projectionmatrix.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,26 @@
  *
  */
 
-#include <iostream>
-#include <exception>
-#include <cmath>
+#ifndef PROJECTIONMATRIX_H
+#define PROJECTIONMATRIX_H
 
-#include "deeglobal.h"
+#include "core/deeglobal.h"
 
-void dee_assert(const char* cond, const char* file, int line) {
-  std::cout << "DeeAssert FAILED:" << std::endl <<
-    "  Condition: " << cond << std::endl <<
-    "  File: " << file << std::endl <<
-    "  Line: " << line << std::endl;
-  std::terminate();
-}
+#include "core/matrix.h"
 
 namespace Dee {
 
-float sin(float angle) {
-  return static_cast<float>(::sin(static_cast<double>(angle)));
-}
+class __DeeExport__ ProjectionMatrix : public Matrix4d {
+  
+public:
+  
+  void ortho(float left, float right, float bottom, float top, float near, float far);
+  
+  void perspective(float fovy, float aspect, float zNear, float zFar);
+  
+  
+};
 
-float cos(float angle) {
-  return static_cast<float>(::cos(static_cast<double>(angle)));
-}
+} /* namespace Dee */
 
-float tan(float angle) {
-  return static_cast<float>(::tan(static_cast<double>(angle)));
-}
-
-}
+#endif // PROJECTIONMATRIX_H

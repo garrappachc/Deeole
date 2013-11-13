@@ -40,16 +40,17 @@ protected:
   /**
    * Prepares the _projection_ matrix.
    */
-  void setProjection() const override;
+  void setProjection() override;
   
   /**
    * Prepares the _modelview_ matrix.
    */
-  void setView() const override;
+  void setView() override;
 
 private:
   Vector3d __angle;
   
+  float __fovy;  /**< Field of view angle, in degrees, in the _y_ direction. */
   
 };
 

@@ -1,5 +1,5 @@
 /*
- * deeglobal.cpp
+ * modelviewmatrix.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,8 @@
  *
  */
 
-#include <iostream>
-#include <exception>
-#include <cmath>
-
-#include "deeglobal.h"
-
-void dee_assert(const char* cond, const char* file, int line) {
-  std::cout << "DeeAssert FAILED:" << std::endl <<
-    "  Condition: " << cond << std::endl <<
-    "  File: " << file << std::endl <<
-    "  Line: " << line << std::endl;
-  std::terminate();
-}
+#include "modelviewmatrix.h"
 
 namespace Dee {
 
-float sin(float angle) {
-  return static_cast<float>(::sin(static_cast<double>(angle)));
-}
-
-float cos(float angle) {
-  return static_cast<float>(::cos(static_cast<double>(angle)));
-}
-
-float tan(float angle) {
-  return static_cast<float>(::tan(static_cast<double>(angle)));
-}
-
-}
+} /* namespace Dee */

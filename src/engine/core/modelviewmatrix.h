@@ -1,5 +1,5 @@
 /*
- * <one line to give the program's name and a brief idea of what it does.>
+ * modelviewmatrix.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,8 +17,23 @@
  *
  */
 
-#include "point.h"
+#ifndef MODELVIEWMATRIX_H
+#define MODELVIEWMATRIX_H
+
+#include "core/deeglobal.h"
+
+#include "core/matrix.h"
 
 namespace Dee {
 
+class __DeeExport__ ModelViewMatrix : public Matrix4d {
+  
+public:
+  
+  
+  
+};
+
 } /* namespace Dee */
+
+#endif // MODELVIEWMATRIX_H

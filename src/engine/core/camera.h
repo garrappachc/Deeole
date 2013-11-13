@@ -23,6 +23,7 @@
 #include "core/deeglobal.h"
 
 #include "core/point.h"
+#include "core/projectionmatrix.h"
 #include "core/vector.h"
 
 namespace Dee {
@@ -181,16 +182,20 @@ public:
     return __up;
   }
   
-  inline double fovy() const {
-    return __fovy;
-  }
-  
-  inline double zNear() const {
+  inline float zNear() const {
     return __zNear;
   }
   
-  inline double zFar() const {
+  inline float zFar() const {
     return __zFar;
+  }
+  
+  inline const ProjectionMatrix& projectionMatrix() const {
+    return __projectionMatrix;
+  }
+  
+  inline ProjectionMatrix& projectionMatrix() {
+    return __projectionMatrix;
   }
   
 protected:
@@ -198,12 +203,12 @@ protected:
   /**
    * Prepares the _projection_ matrix.
    */
-  virtual void setProjection() const;
+  virtual void setProjection();
   
   /**
    * Prepares the _modelview_ matrix.
    */
-  virtual void setView() const;
+  virtual void setView();
   
 private:
   
@@ -211,10 +216,11 @@ private:
   Vector3d __lookAt; /**< LookAt vector */
   Vector3d __up;     /**< Up vector */
   
-  double __fovy;  /**< Field of view angle, in degrees, in the _y_ direction. */
-  double __zNear; /**< Specifies the distance from the viewer to the near
+  ProjectionMatrix __projectionMatrix;
+  
+  float __zNear; /**< Specifies the distance from the viewer to the near
                        clipping plane (always positive). */
-  double __zFar;  /**< Specifies the distance from the viewer to the far
+  float __zFar;  /**< Specifies the distance from the viewer to the far
                        clipping plane (always positive). */
   
 }; /** @} */

@@ -13,6 +13,7 @@ set (core_SRCS
   mouse.cpp
   mutex.cpp
   object.cpp
+  projectionmatrix.cpp
   renderable.cpp
   scene.cpp
   scenemanager.cpp

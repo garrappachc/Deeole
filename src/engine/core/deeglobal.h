@@ -81,6 +81,7 @@ namespace Dee {
   
   float cos(float angle);
   float sin(float angle);
+  float tan(float angle);
   
   /**
    * \ingroup Core
