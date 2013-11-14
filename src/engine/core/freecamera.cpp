@@ -61,7 +61,7 @@ void FreeCamera::setProjection() {
   
   float aspect = static_cast<float>(deeApp->window()->width()) /
                  static_cast<float>(deeApp->window()->height());
-                 
+  
   projectionMatrix().perspective(__fovy, aspect, zNear(), zFar());
   
   glMatrixMode(GL_PROJECTION);
@@ -69,12 +69,18 @@ void FreeCamera::setProjection() {
 }
 
 void FreeCamera::setView() {
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+//   glMatrixMode(GL_MODELVIEW);
+//   glLoadIdentity();
+//   
+//   gluLookAt(eye().x(), eye().y(), eye().z(),
+//             eye().x() + lookAt().x(), eye().y() + lookAt().y(), eye().z() + lookAt().z(),
+//             up().x(), up().y(), up().z());
   
-  gluLookAt(eye().x(), eye().y(), eye().z(),
-            eye().x() + lookAt().x(), eye().y() + lookAt().y(), eye().z() + lookAt().z(),
-            up().x(), up().y(), up().z());
+  modelViewMatrix().lookAt(eye(), eye() + lookAt(), up());
+  
+  glMatrixMode(GL_MODELVIEW);
+  glLoadMatrixf(modelViewMatrix());
+  
 }
 
 } /* namespace Dee */

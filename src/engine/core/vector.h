@@ -24,10 +24,31 @@
 #include <cmath>
 #include <cstring>
 #include <utility>
+#include <type_traits>
 
 #include "core/deeglobal.h"
 
+#include "core/types.h"
+
 namespace Dee {
+  
+  namespace {
+    
+    /*
+     * Helpful template functions.
+     */
+    template <int ...S>
+      struct __seq {};
+    
+    template <int I, int ...S>
+      struct __gens : __gens<I-1, I-1, S...> {};
+    
+    template <int ...S>
+      struct __gens<0, S...> {
+        typedef __seq<S...> type;
+      };
+    
+  }
  
 /**
  * \ingroup Core
@@ -85,20 +106,6 @@ template <typename T>
 template <typename T, unsigned N>
   class __DeeExport__ Vector : public AbstractVector<T> {
     
-    /*
-     * Helpful template functions.
-     */
-    template <int ...S>
-      struct __seq {};
-    
-    template <int I, int ...S>
-      struct __gens : __gens<I-1, I-1, S...> {};
-    
-    template <int ...S>
-      struct __gens<0, S...> {
-        typedef __seq<S...> type;
-      };
-    
     template <typename Operator, int ...S>
       Vector __unpackOperator(Operator o, const Vector& other, __seq<S...>) const {
         return Vector(o(__data[S], other.__data[S]) ...);
@@ -108,7 +115,6 @@ template <typename T, unsigned N>
       Vector __unpackOperator(Operator o, const T& scalar, __seq<S...>) const {
         return Vector(o(__data[S], scalar) ...);
       }
-    
 
   public:
     
@@ -161,6 +167,18 @@ template <typename T, unsigned N>
     }
     
     /**
+     * Constructs the Vector from the given array of values.
+     * 
+     * ~~~~{.cpp}
+     * double[] vals = { 0.0, 0.1, 0.5 };
+     * Vector<double, 3> v(vals);
+     * ~~~~
+     */
+    Vector(const T* data) {
+      memcpy(__data, data, N * sizeof(T));
+    }
+    
+    /**
      * Variadic template constructor. Just for convenience.
      * 
      * ~~~~{.cpp}
@@ -169,13 +187,13 @@ template <typename T, unsigned N>
      * 
      * \param values Values to have the vector initialized with.
      */
-    template <typename... Args>
-      Vector(Args&&... values) :
-          __data{ std::forward<Args>(values)... } {
-        
-        static_assert(sizeof...(Args) == N,
-                      "Argument count must match the vector's size!");
-      }
+    template <typename... Args,
+              typename = typename std::enable_if<
+                Types::all_of_type<T, Args...>::value &&
+                sizeof...(Args) == N
+              >::type>
+      explicit Vector(Args&&... values) :
+          __data{ std::forward<Args>(values)... } {}
     
     /**
      * Copy assignment operator.
@@ -390,10 +408,25 @@ template <typename T, unsigned N>
      * \return The new vector.
      */
     Vector operator /(const T& scalar) const {
+      DeeAssert(scalar != 0);
+      
       return __unpackOperator(
         [](const T& a, const T& b) -> T {
           return a / b;
         }, scalar, typename __gens<N>::type());
+    }
+    
+    /**
+     * Cross product.
+     */
+    Vector cross(const Vector<T, N>& other) const {
+      static_assert(N == 3, "Cross product implemented only for 3-D vectors");
+      
+      return Vector<T, 3>(
+        (__data[1] * other[2]) - (__data[2] * other[1]),
+        (__data[2] * other[0]) - (__data[0] * other[2]),
+        (__data[0] * other[1]) - (__data[1] * other[0])
+      );
     }
     
   private:

@@ -238,6 +238,13 @@ template <typename T, unsigned N>
       return *this;
     }
     
+    Point<T, N> operator -() const {
+      Point<T, N> p;
+      for (unsigned i = 0; i < N; ++i)
+        p[i] = 0 - __data[i];
+      return std::move(p);
+    }
+    
     /**
      * Moves the point by the opposite vector.
      * 
@@ -247,7 +254,44 @@ template <typename T, unsigned N>
     Point& operator -=(const Vector<T, N>& vector) {
       for (unsigned i = 0; i < N; ++i)
         __data[i] -= vector[i];
+      
       return *this;
+    }
+    
+    Point<T, N> operator +(const Point<T, N>& other) const {
+      Point<T, N> result(*this);
+      for (unsigned i = 0; i < N; ++i)
+        result.__data[i] += other[i];
+      
+      return result;
+    }
+    
+    Point<T, N> operator -(const Point<T, N>& other) const {
+      Point<T, N> result(*this);
+      for (unsigned i = 0; i < N; ++i)
+        result.__data[i] -= other[i];
+      
+      return result;
+    }
+    
+    Point<T, N> operator +(const Vector<T, N>& other) const {
+      Point<T, N> result(*this);
+      for (unsigned i = 0; i < N; ++i)
+        result.__data[i] += other[i];
+      
+      return result;
+    }
+    
+    Point<T, N> operator -(const Vector<T, N>& other) const {
+      Point<T, N> result(*this);
+      for (unsigned i = 0; i < N; ++i)
+        result.__data[i] -= other[i];
+      
+      return result;
+    }
+    
+    operator Vector<T, N>() const {
+      return Vector<T, N>(__data);
     }
     
   private:

@@ -10,6 +10,7 @@ set (core_SRCS
   inputhandler.cpp
   item.cpp
   keyboard.cpp
+  modelviewmatrix.cpp
   mouse.cpp
   mutex.cpp
   object.cpp

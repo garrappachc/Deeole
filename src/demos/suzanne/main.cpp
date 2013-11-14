@@ -16,6 +16,8 @@
 
 class FrameCounter : public Dee::Object {
 public:
+  FrameCounter() : __fps(0) {}
+  
   DeeSlot printFps() {
     std::cout << "Fps: " << __fps << std::endl;
     __fps = 0;
@@ -75,7 +77,6 @@ int main(int argc, char** argv) {
     
     const Dee::Mouse* mouse = Dee::Application::input()->mouse();
     camera.rotate(mouse->motion());
-    
   });
   
   Dee::Item item;

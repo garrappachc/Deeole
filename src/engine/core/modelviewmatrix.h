@@ -23,15 +23,18 @@
 #include "core/deeglobal.h"
 
 #include "core/matrix.h"
+#include "core/point.h"
+#include "core/vector.h"
 
 namespace Dee {
 
 class __DeeExport__ ModelViewMatrix : public Matrix4d {
   
 public:
+  void lookAt(const Point3d& eye, const Point3d& center,
+              const Vector3d& up = Vector3d(0.0f, 1.0f, 0.0f));
   
-  
-  
+  void translate(const Vector3d& vector);
 };
 
 } /* namespace Dee */

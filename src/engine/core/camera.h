@@ -23,6 +23,7 @@
 #include "core/deeglobal.h"
 
 #include "core/point.h"
+#include "core/modelviewmatrix.h"
 #include "core/projectionmatrix.h"
 #include "core/vector.h"
 
@@ -198,6 +199,10 @@ public:
     return __projectionMatrix;
   }
   
+  inline ModelViewMatrix& modelViewMatrix() {
+    return __modelViewMatrix;
+  }
+  
 protected:
   
   /**
@@ -217,6 +222,7 @@ private:
   Vector3d __up;     /**< Up vector */
   
   ProjectionMatrix __projectionMatrix;
+  ModelViewMatrix __modelViewMatrix;
   
   float __zNear; /**< Specifies the distance from the viewer to the near
                        clipping plane (always positive). */

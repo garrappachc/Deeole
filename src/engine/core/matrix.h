@@ -52,7 +52,7 @@ template <typename T, int N>
     }
     
     Matrix& operator =(const Matrix& other) {
-      memcpy(__data, other.data, size() * sizeof(T));
+      memcpy(__data, other.__data, size() * sizeof(T));
     }
     
     constexpr int dimension() {
@@ -140,6 +140,30 @@ template <typename T, int N>
         }
         
       return std::move(result);
+    }
+    
+    Matrix<T, N> operator *(const Matrix<T, N>& other) const {
+      Matrix<T, N> result;
+      
+      /**
+       * TODO: Make this faster, i.e. by pararellizing the computation on
+       *        several threads.
+       */
+      
+      for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) {
+          for (int n = 0; n < N; ++n) {
+            result.at(i, j) += this->at(i, n) * other.at(n, j);
+          }
+        }
+      }
+      
+      return std::move(result);
+    }
+    
+    Matrix<T, N>& operator *=(const Matrix<T, N>& other) {
+      *this = *this * other;
+      return *this;
     }
     
   private:
