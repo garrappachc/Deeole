@@ -418,6 +418,12 @@ template <typename T, unsigned N>
     
     /**
      * Cross product.
+     * 
+     * Available only if _size_ == 3.
+     * 
+     * \param other The other vector.
+     * \return A new vector that is the cross product between this vector
+     *          and _other_.
      */
     Vector cross(const Vector<T, N>& other) const {
       static_assert(N == 3, "Cross product implemented only for 3-D vectors");

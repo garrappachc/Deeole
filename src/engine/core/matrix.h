@@ -34,6 +34,12 @@ namespace {
   template <typename T, int N> T determinant(const Matrix<T, N>&);
 }
 
+/**
+ * \ingroup Core
+ * @{
+ * 
+ * The Matrix class handles classic square matrix.
+ */
 template <typename T, int N>
   class __DeeExport__ Matrix {
     
@@ -169,7 +175,7 @@ template <typename T, int N>
   private:
     T __data[N * N];
     
-  };
+  }; /** @} */
 
 using Matrix2d = Matrix<float, 2>;
 using Matrix3d = Matrix<float, 3>;
