@@ -129,6 +129,10 @@ namespace Dee {
     DirectConnection
   };
   
+  enum Axis {
+    X, Y, Z
+  };
+  
   namespace Key {
     
     /**

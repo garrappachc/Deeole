@@ -52,6 +52,7 @@ namespace Helpers {
 template <typename... Args>
   class __DeeHide__ AbstractSlotCaller {
   public:
+    virtual ~AbstractSlotCaller() {}
     virtual void call(const std::tuple<Args...>& args) = 0;
     virtual void call(Args&&... args) = 0;
 };

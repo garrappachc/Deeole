@@ -36,10 +36,15 @@ void Item::render() {
     -0.5,  0.5, -0.5
   };
   
+  glPushMatrix();
+  
+  glMultMatrixf(__matrix);
   glColor3f(1.0f, 1.0f, 1.0f);
   
   glVertexPointer(3, GL_FLOAT, 0, vertices);
   glDrawArrays(GL_TRIANGLES, 0, 6);
+  
+  glPopMatrix();
 }
 
 } /* namespace Dee */

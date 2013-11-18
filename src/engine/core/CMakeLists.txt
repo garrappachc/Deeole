@@ -22,6 +22,7 @@ set (core_SRCS
   slotqueue.cpp
   thread.cpp
   timer.cpp
+  transformationmatrix.cpp
   userinterface.cpp
   window.cpp
 )

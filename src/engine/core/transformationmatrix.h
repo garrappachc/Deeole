@@ -1,5 +1,5 @@
 /*
- * item.h
+ * transformationmatrix.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,33 +17,24 @@
  *
  */
 
-#ifndef ITEM_H
-#define ITEM_H
+#ifndef TRANSFORMATIONMATRIX_H
+#define TRANSFORMATIONMATRIX_H
 
 #include "core/deeglobal.h"
 
-#include "core/renderable.h"
-#include "core/transformationmatrix.h"
+#include "core/matrix.h"
+#include "core/point.h"
+#include "core/vector.h"
 
 namespace Dee {
 
-class __DeeExport__ Item : public Renderable {
+class __DeeExport__ TransformationMatrix : public Matrix4d {
   
 public:
-  Item(bool visible = true);
-  
-  inline void rotate(float angle, Axis axis) {
-    __matrix.rotate(angle, axis);
-  }
-  
-protected:
-  void render() override;
-  
-private:
-  TransformationMatrix __matrix;
+  void rotate(float angle, Axis axis);
   
 };
 
 } /* namespace Dee */
 
-#endif // ITEM_H
+#endif // TRANSFORMATIONMATRIX_H

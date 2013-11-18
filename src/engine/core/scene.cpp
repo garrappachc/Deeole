@@ -28,7 +28,8 @@
 
 namespace Dee {
 
-Scene::Scene() {}
+Scene::Scene() :
+     __hasAntyaliasing(false) {}
 
 Scene::~Scene() {}
 
@@ -46,6 +47,10 @@ void Scene::setCamera(Camera* camera) {
   __camera = camera;
 }
 
+void Scene::setAntyaliasing(bool antyaliasing) {
+  __hasAntyaliasing = antyaliasing;
+}
+
 void Scene::render() {
   clear();
   
@@ -53,6 +58,18 @@ void Scene::render() {
     __camera->setView();
   
   glEnableClientState(GL_VERTEX_ARRAY);
+  
+  if (__hasAntyaliasing) {
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+    glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_POLYGON_SMOOTH);
+  } else {
+    glHint(GL_LINE_SMOOTH_HINT, GL_FASTEST);
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_FASTEST);
+    glDisable(GL_LINE_SMOOTH);
+    glDisable(GL_POLYGON_SMOOTH);
+  }
   
   for (Renderable* r: __objects)
     r->render();

@@ -92,6 +92,8 @@ public:
    */
   void setCamera(Camera* camera);
   
+  void setAntyaliasing(bool antyaliasing);
+  
   /**
    * Gives access to the scene's camera.
    * 
@@ -100,6 +102,10 @@ public:
    */
   inline const Camera* camera() const {
     return __camera;
+  }
+  
+  inline bool hasAntyaliasing() const {
+    return __hasAntyaliasing;
   }
   
 protected:
@@ -129,6 +135,8 @@ private:
   
   std::vector<Renderable*> __objects;
   Camera*                  __camera;
+  
+  bool __hasAntyaliasing;
   
   
 }; /** @} */
