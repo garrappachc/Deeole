@@ -37,6 +37,10 @@ public:
   Item(bool visible = true);
   Item(std::initializer_list<Vertex>&& vertices, bool visible = true);
   
+  inline void translate(const Vector3d& vector) {
+    __transform.translate(vector);
+  }
+  
   inline void rotate(float angle, Axis axis) {
     __transform.rotate(angle, axis);
   }

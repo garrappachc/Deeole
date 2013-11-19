@@ -25,26 +25,31 @@ TransformationMatrix& TransformationMatrix::operator=(const Matrix4d& other) {
   Matrix4d::operator =(other);
 }
 
-void TransformationMatrix::rotate(float angle, Axis axis) {
+TransformationMatrix& TransformationMatrix::translate(const Vector3d& vector) {
+  static Matrix4d mov;
+  
+  mov.at(0, 3) = vector.x();
+  mov.at(1, 3) = vector.y();
+  mov.at(2, 3) = vector.z();
+  
+  *this *= mov;
+}
+
+TransformationMatrix& TransformationMatrix::rotate(float angle, Axis axis) {
   switch (axis) {
     case X:
-      rotate(angle, Vector3d(1.0f, 0.0f, 0.0f));
-      break;
+      return rotate(angle, Vector3d(1.0f, 0.0f, 0.0f));
       
     case Y:
-      rotate(angle, Vector3d(0.0f, 1.0f, 0.0f));
-      break;
+      return rotate(angle, Vector3d(0.0f, 1.0f, 0.0f));
       
     case Z:
-      rotate(angle, Vector3d(0.0f, 0.0f, 1.0f));
-      break;
+      return rotate(angle, Vector3d(0.0f, 0.0f, 1.0f));
   }
 }
 
-void TransformationMatrix::rotate(float angle, const Vector3d& vector) {
+TransformationMatrix& TransformationMatrix::rotate(float angle, const Vector3d& vector) {
   static Matrix4d rot;
-  
-  loadIdentity();
   
   float rad = deg2Rad(angle);
   

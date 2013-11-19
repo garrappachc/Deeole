@@ -33,8 +33,10 @@ class __DeeExport__ TransformationMatrix : public Matrix4d {
 public:
   TransformationMatrix& operator =(const Matrix4d& other);
   
-  void rotate(float angle, Axis axis);
-  void rotate(float angle, const Vector3d& vector);
+  TransformationMatrix& translate(const Vector3d& vector);
+  
+  TransformationMatrix& rotate(float angle, Axis axis);
+  TransformationMatrix& rotate(float angle, const Vector3d& vector);
   
 };
 
