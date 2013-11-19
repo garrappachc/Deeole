@@ -38,7 +38,7 @@ void Item::render() {
   
   glPushMatrix();
   
-  glMultMatrixf(__matrix);
+  glMultMatrixf(__transform);
   glColor3f(1.0f, 1.0f, 1.0f);
   
   glVertexPointer(3, GL_FLOAT, 0, vertices);

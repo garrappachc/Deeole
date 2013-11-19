@@ -21,38 +21,51 @@
 
 namespace Dee {
 
+TransformationMatrix& TransformationMatrix::operator=(const Matrix4d& other) {
+  Matrix4d::operator =(other);
+}
+
 void TransformationMatrix::rotate(float angle, Axis axis) {
-  float radangle = deg2Rad(angle); // convert to radians
+  switch (axis) {
+    case X:
+      rotate(angle, Vector3d(1.0f, 0.0f, 0.0f));
+      break;
+      
+    case Y:
+      rotate(angle, Vector3d(0.0f, 1.0f, 0.0f));
+      break;
+      
+    case Z:
+      rotate(angle, Vector3d(0.0f, 0.0f, 1.0f));
+      break;
+  }
+}
+
+void TransformationMatrix::rotate(float angle, const Vector3d& vector) {
+  static Matrix4d rot;
   
-  float c = cos(radangle);
-  float s = sin(radangle);
+  loadIdentity();
+  
+  float rad = deg2Rad(angle);
+  
+  float c = cos(rad);
+  float s = sin(rad);
   
   float anti_c = 1 - c;
   
-  Vector3d rot;
-  switch (axis) {
-    case X:
-      rot = Vector3d(1.0f, 0.0f, 0.0f);
-      break;
-    case Y:
-      rot = Vector3d(0.0f, 1.0f, 0.0f);
-      break;
-    case Z:
-      rot = Vector3d(0.0f, 0.0f, 1.0f);
-      break;
-  }
+  rot.at(0,0) = vector.x() * vector.x() * (anti_c) + c;
+  rot.at(0,1) = vector.x() * vector.y() * (anti_c) - (vector.z() * s);
+  rot.at(0,2) = vector.x() * vector.z() * (anti_c) + (vector.y() * s);
   
-  at(0,0) = rot.x() * rot.x() * (anti_c) + c;
-  at(1,0) = rot.x() * rot.y() * (anti_c) + (rot.z() * s);
-  at(2,0) = rot.x() * rot.z() * (anti_c) - (rot.y() * s);
+  rot.at(1,0) = vector.x() * vector.y() * (anti_c) + (vector.z() * s);
+  rot.at(1,1) = vector.y() * vector.y() * (anti_c) + c;
+  rot.at(1,2) = vector.y() * vector.z() * (anti_c) - (vector.x() * s);
   
-  at(0,1) = rot.x() * rot.y() * (anti_c) - (rot.z() * s);
-  at(1,1) = rot.y() * rot.y() * (anti_c) + c;
-  at(2,1) = rot.y() * rot.z() * (anti_c) + (rot.x() * s);
+  rot.at(2,0) = vector.x() * vector.z() * (anti_c) - (vector.y() * s);
+  rot.at(2,1) = vector.y() * vector.z() * (anti_c) + (vector.x() * s);
+  rot.at(2,2) = vector.z() * vector.z() * (anti_c) + c;
   
-  at(0,2) = rot.x() * rot.z() * (anti_c) + (rot.y() * s);
-  at(1,2) = rot.y() * rot.z() * (anti_c) - (rot.x() * s);
-  at(2,2) = rot.z() * rot.z() * (anti_c) + c;
+  *this *= rot;
 }
 
 } /* namespace Dee */

@@ -33,14 +33,18 @@ public:
   Item(bool visible = true);
   
   inline void rotate(float angle, Axis axis) {
-    __matrix.rotate(angle, axis);
+    __transform.rotate(angle, axis);
+  }
+  
+  inline void reset() {
+    __transform.loadIdentity();
   }
   
 protected:
   void render() override;
   
 private:
-  TransformationMatrix __matrix;
+  TransformationMatrix __transform;
   
 };
 
