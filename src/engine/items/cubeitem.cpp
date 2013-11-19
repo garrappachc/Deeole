@@ -1,5 +1,5 @@
 /*
- * item.cpp
+ * cubeitem.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,30 +17,26 @@
  *
  */
 
-#include <GL/gl.h>
-
-#include "item.h"
+#include "cubeitem.h"
 
 namespace Dee {
 
-Item::Item(bool visible) :
-    Renderable(visible) {}
+CubeItem::CubeItem(bool visible) :
+    Item({
+      
+      /* Front side */
+      { -0.5f,  0.5f, -0.5f },
+      {  0.5f,  0.5f, -0.5f },
+      {  0.5f, -0.5f, -0.5f },
+      
+      {  0.5f, -0.5f, -0.5f },
+      { -0.5f, -0.5f, -0.5f },
+      { -0.5f,  0.5f, -0.5f }
+      
+      /* Left side */
+      
+      
+    }, visible) {}
 
-Item::Item(std::initializer_list<Vertex>&& vertices, bool visible) :
-    Renderable(visible),
-    __vertices(std::forward<std::initializer_list<Vertex>>(vertices)) {}
-
-void Item::render() {
-  
-  glPushMatrix();
-  
-  glMultMatrixf(__transform);
-  glColor3f(1.0f, 1.0f, 1.0f);
-  
-  glVertexPointer(4, GL_FLOAT, 0, &__vertices[0]);
-  glDrawArrays(GL_TRIANGLES, 0, __vertices.size());
-  
-  glPopMatrix();
-}
 
 } /* namespace Dee */

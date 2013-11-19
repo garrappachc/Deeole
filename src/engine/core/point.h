@@ -26,6 +26,7 @@
 #include "core/deeglobal.h"
 
 #include "core/vector.h"
+#include "core/types.h"
 
 namespace Dee {
 
@@ -102,6 +103,12 @@ template <typename T, unsigned N>
       memcpy(__data, other.__data, sizeof(T) * N);
     }
     
+    Point(std::initializer_list<T>&& values) {
+      DeeAssert(values.size() == N);
+      
+      std::move(values.begin(), values.end(), __data);
+    }
+    
     /**
      * The variadic template constructor.
      * 
@@ -111,12 +118,13 @@ template <typename T, unsigned N>
      * Point<float, 2> f(2.5f, .3f);
      * ~~~~
      */
-    template <typename... Args>
-      Point(Args... values) :
-          __data{ values... } {
-        static_assert(sizeof...(Args) == N,
-                      "Argument count must match the point's dimension!");
-      }
+    template <typename... Args,
+              typename = typename std::enable_if<
+                Types::all_of_type<T, Args...>::value &&
+                sizeof...(Args) == N
+              >::type>
+      explicit Point(Args&&... values) :
+          __data{ std::forward<Args>(values)... } {}
     
     /**
      * The copy assignment operator.
@@ -152,6 +160,14 @@ template <typename T, unsigned N>
     T& operator [](unsigned i) {
       DeeAssert(i < N);
       return __data[i];
+    }
+    
+    operator T*() {
+      return __data;
+    }
+    
+    operator const T*() const {
+      return __data;
     }
     
     /**

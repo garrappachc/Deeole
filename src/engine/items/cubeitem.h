@@ -1,5 +1,5 @@
 /*
- * item.cpp
+ * cubeitem.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,30 +17,24 @@
  *
  */
 
-#include <GL/gl.h>
+#ifndef CUBEITEM_H
+#define CUBEITEM_H
 
-#include "item.h"
+#include "core/deeglobal.h"
+
+#include "core/item.h"
 
 namespace Dee {
 
-Item::Item(bool visible) :
-    Renderable(visible) {}
-
-Item::Item(std::initializer_list<Vertex>&& vertices, bool visible) :
-    Renderable(visible),
-    __vertices(std::forward<std::initializer_list<Vertex>>(vertices)) {}
-
-void Item::render() {
+class CubeItem : public Item {
   
-  glPushMatrix();
+public:
   
-  glMultMatrixf(__transform);
-  glColor3f(1.0f, 1.0f, 1.0f);
+  CubeItem(bool visible = true);
   
-  glVertexPointer(4, GL_FLOAT, 0, &__vertices[0]);
-  glDrawArrays(GL_TRIANGLES, 0, __vertices.size());
   
-  glPopMatrix();
-}
+};
 
 } /* namespace Dee */
+
+#endif // CUBEITEM_H

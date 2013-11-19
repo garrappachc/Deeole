@@ -113,6 +113,10 @@ template <typename T, int N>
         at(i, i) = static_cast<T>(1);
     }
     
+    void fillWithZeores() {
+      memset(__data, 0, size() * sizeof(T));
+    }
+    
 #if defined minor
 # undef minor
 #endif
@@ -150,6 +154,7 @@ template <typename T, int N>
     
     Matrix<T, N> operator *(const Matrix<T, N>& other) const {
       Matrix<T, N> result;
+      result.fillWithZeores();
       
       /**
        * TODO: Make this faster, i.e. by pararellizing the computation on

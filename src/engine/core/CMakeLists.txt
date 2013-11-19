@@ -24,6 +24,7 @@ set (core_SRCS
   timer.cpp
   transformationmatrix.cpp
   userinterface.cpp
+  vertex.cpp
   window.cpp
 )
 if (LINUX)

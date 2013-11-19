@@ -20,10 +20,14 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include <initializer_list>
+#include <vector>
+
 #include "core/deeglobal.h"
 
 #include "core/renderable.h"
 #include "core/transformationmatrix.h"
+#include "core/vertex.h"
 
 namespace Dee {
 
@@ -31,6 +35,7 @@ class __DeeExport__ Item : public Renderable {
   
 public:
   Item(bool visible = true);
+  Item(std::initializer_list<Vertex>&& vertices, bool visible = true);
   
   inline void rotate(float angle, Axis axis) {
     __transform.rotate(angle, axis);
@@ -44,6 +49,8 @@ protected:
   void render() override;
   
 private:
+  std::vector<Vertex> __vertices;
+  
   TransformationMatrix __transform;
   
 };

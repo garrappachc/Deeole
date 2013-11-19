@@ -1,5 +1,5 @@
 /*
- * item.cpp
+ * vertex.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,30 +17,35 @@
  *
  */
 
-#include <GL/gl.h>
+#ifndef VERTEX_H
+#define VERTEX_H
 
-#include "item.h"
+#include <initializer_list>
+
+#include "core/deeglobal.h"
 
 namespace Dee {
 
-Item::Item(bool visible) :
-    Renderable(visible) {}
-
-Item::Item(std::initializer_list<Vertex>&& vertices, bool visible) :
-    Renderable(visible),
-    __vertices(std::forward<std::initializer_list<Vertex>>(vertices)) {}
-
-void Item::render() {
+class __DeeExport__ Vertex {
   
-  glPushMatrix();
+public:
+  Vertex();
   
-  glMultMatrixf(__transform);
-  glColor3f(1.0f, 1.0f, 1.0f);
+  Vertex(std::initializer_list<float>&& coords);
   
-  glVertexPointer(4, GL_FLOAT, 0, &__vertices[0]);
-  glDrawArrays(GL_TRIANGLES, 0, __vertices.size());
+  inline operator float*() {
+    return __data;
+  }
+    
+  inline operator const float*() const {
+    return __data;
+  }
   
-  glPopMatrix();
-}
+private:
+  float __data[4];
+  
+};
 
 } /* namespace Dee */
+
+#endif // VERTEX_H

@@ -8,11 +8,13 @@
 #include "core/signal.h"
 #include "core/timer.h"
 #include "core/window.h"
+#include "core/point.h"
 #include "core/scenemanager.h"
 #include "core/scene.h"
 #include "core/camera.h"
 #include "core/freecamera.h"
 #include "core/item.h"
+#include "items/cubeitem.h"
 
 class FrameCounter : public Dee::Object {
 public:
@@ -51,6 +53,10 @@ int main(int argc, char** argv) {
         deeApp->window()->setFullscreen(!deeApp->window()->fullscreen());
         keyDown = true;
       }
+    } else if (keyboard->keyDown(Dee::Key::H) && keyboard->keyDown(Dee::Key::LCtrl)) {
+      if (!keyDown) {
+        deeApp->sceneManager()->activeScene()->setAntyaliasing(true);
+      }
     } else {
       keyDown = false;
     }
@@ -79,20 +85,23 @@ int main(int argc, char** argv) {
     camera.rotate(mouse->motion());
   });
   
-  Dee::Item item;
+  Dee::CubeItem item;
+  
+  std::cout << sizeof(Dee::Vertex) << std::endl;
+  
   app.sceneManager()->activeScene()->addRenderable(&item);
   
   FrameCounter counter;
   app.beforeRender.connect(&counter, &FrameCounter::beforeRender);
   Dee::Timer timer(1000);
   timer.timeout.connect(&counter, &FrameCounter::printFps);
-  timer.timeout.connect([=, &item]() {
-    static float angle = 0.0f;
-    angle += 15.0f;
-    
-    item.reset();
-    item.rotate(angle, Dee::Z);
-  });
+//   timer.timeout.connect([=, &item]() {
+//     static float angle = 0.0f;
+//     angle += 15.0f;
+//     
+//     item.reset();
+//     item.rotate(angle, Dee::Z);
+//   });
   timer.start();
   
   return app.run();
