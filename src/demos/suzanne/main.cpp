@@ -95,11 +95,14 @@ int main(int argc, char** argv) {
   app.beforeRender.connect(&counter, &FrameCounter::beforeRender);
   Dee::Timer timer(1000);
   timer.timeout.connect(&counter, &FrameCounter::printFps);
-  app.beforeRender.connect([=, &item]() {
+  timer.start();
+  
+  Dee::Timer timer2(10);
+  timer2.timeout.connect([=, &item]() {
     item.rotate(0.5f, Dee::Z);
     item.translate({ 0.0f, 0.01f, 0.0f });
   });
-  timer.start();
+  timer2.start();
   
   return app.run();
 }
