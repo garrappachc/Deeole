@@ -1,5 +1,5 @@
 /*
- * cubeitem.cpp
+ * quaditem.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,11 +17,11 @@
  *
  */
 
-#include "cubeitem.h"
+#include "quaditem.h"
 
 namespace Dee {
 
-CubeItem::CubeItem(bool visible) :
+QuadItem::QuadItem(bool visible) :
     Item({
       
       /* Front side */
@@ -30,15 +30,6 @@ CubeItem::CubeItem(bool visible) :
       {  0.5f, -0.5f, -0.5f },
       
       {  0.5f, -0.5f, -0.5f },
-      { -0.5f, -0.5f, -0.5f },
-      { -0.5f,  0.5f, -0.5f },
-      
-      /* Left side */
-      { -0.5f,  0.5f, -0.5f },
-      { -0.5f,  0.5f,  0.5f },
-      { -0.5f, -0.5f,  0.5f },
-
-      { -0.5f, -0.5f,  0.5f },
       { -0.5f, -0.5f, -0.5f },
       { -0.5f,  0.5f, -0.5f }
       

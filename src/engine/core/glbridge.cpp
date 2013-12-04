@@ -102,7 +102,7 @@ GlBridge::__findExtensions() {
   } else { /* old way */
     const char * pExtensions = reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));
     std::string temp;
-    for (int i = 0; i < strlen(pExtensions); ++i) {
+    for (size_t i = 0; i < strlen(pExtensions); ++i) {
       if (pExtensions[i] == ' ') {
         extensions.push_back(temp);
         temp.clear();

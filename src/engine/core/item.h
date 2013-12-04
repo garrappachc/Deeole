@@ -45,8 +45,24 @@ public:
     __transform.rotate(angle, axis);
   }
   
+  inline void scale(const Vector3d& vector) {
+    __transform.scale(vector);
+  }
+  
   inline void reset() {
     __transform.loadIdentity();
+  }
+  
+  inline const std::vector<Vertex>& vertices() const {
+    return __vertices;
+  }
+  
+  inline std::vector<Vertex>& vertices() {
+      return __vertices;
+    }
+  
+  inline const TransformationMatrix& transform() const {
+    return __transform;
   }
   
 protected:

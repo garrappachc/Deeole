@@ -1,5 +1,5 @@
 /*
- * cubeitem.cpp
+ * trianglestripitem.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,27 @@
  *
  */
 
-#include "cubeitem.h"
+#ifndef TRIANGLESTRIPITEM_H
+#define TRIANGLESTRIPITEM_H
+
+#include "core/deeglobal.h"
+
+#include "core/item.h"
 
 namespace Dee {
 
-CubeItem::CubeItem(bool visible) :
-    Item({
-      
-      /* Front side */
-      { -0.5f,  0.5f, -0.5f },
-      {  0.5f,  0.5f, -0.5f },
-      {  0.5f, -0.5f, -0.5f },
-      
-      {  0.5f, -0.5f, -0.5f },
-      { -0.5f, -0.5f, -0.5f },
-      { -0.5f,  0.5f, -0.5f },
-      
-      /* Left side */
-      { -0.5f,  0.5f, -0.5f },
-      { -0.5f,  0.5f,  0.5f },
-      { -0.5f, -0.5f,  0.5f },
-
-      { -0.5f, -0.5f,  0.5f },
-      { -0.5f, -0.5f, -0.5f },
-      { -0.5f,  0.5f, -0.5f }
-      
-    }, visible) {}
-
+class TriangleStripItem : public Item {
+  
+public:
+  
+  TriangleStripItem(int triangles = 1, bool visible = true);
+  
+protected:
+  void render() override;
+  
+  
+};
 
 } /* namespace Dee */
+
+#endif // TRIANGLESTRIPITEM_H

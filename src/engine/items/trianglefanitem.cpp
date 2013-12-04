@@ -1,5 +1,5 @@
 /*
- * cubeitem.cpp
+ * trianglefanitem.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,42 @@
  *
  */
 
-#include "cubeitem.h"
+#include <GL/gl.h>
+
+#include "trianglefanitem.h"
 
 namespace Dee {
 
-CubeItem::CubeItem(bool visible) :
+TriangleFanItem::TriangleFanItem(int triangles, bool visible) :
     Item({
       
       /* Front side */
-      { -0.5f,  0.5f, -0.5f },
-      {  0.5f,  0.5f, -0.5f },
-      {  0.5f, -0.5f, -0.5f },
+      {  0.0f,  0.0f, -0.5f },
+      { -0.5f,  1.0f, -0.5f },
+      {  0.5f,  1.0f, -0.5f }
       
-      {  0.5f, -0.5f, -0.5f },
-      { -0.5f, -0.5f, -0.5f },
-      { -0.5f,  0.5f, -0.5f },
-      
-      /* Left side */
-      { -0.5f,  0.5f, -0.5f },
-      { -0.5f,  0.5f,  0.5f },
-      { -0.5f, -0.5f,  0.5f },
+    }, visible) {
+  
+  float x = 1.0f;
+  
+  for (int i = 1; i < triangles; ++i) {
+    vertices().push_back({x, 1.0f, -0.5f});
+    x += 0.5f;
+  }
+}
 
-      { -0.5f, -0.5f,  0.5f },
-      { -0.5f, -0.5f, -0.5f },
-      { -0.5f,  0.5f, -0.5f }
-      
-    }, visible) {}
+void TriangleFanItem::render() {
+  
+  glPushMatrix();
+  
+  glMultMatrixf(transform());
+  glColor3f(1.0f, 1.0f, 1.0f);
+  
+  glVertexPointer(4, GL_FLOAT, 0, &vertices()[0]);
+  glDrawArrays(GL_TRIANGLE_FAN, 0, vertices().size());
+  
+  glPopMatrix();
+}
 
 
 } /* namespace Dee */

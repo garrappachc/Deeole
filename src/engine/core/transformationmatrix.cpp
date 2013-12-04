@@ -23,6 +23,7 @@ namespace Dee {
 
 TransformationMatrix& TransformationMatrix::operator=(const Matrix4d& other) {
   Matrix4d::operator =(other);
+  return *this;
 }
 
 TransformationMatrix& TransformationMatrix::translate(const Vector3d& vector) {
@@ -33,6 +34,7 @@ TransformationMatrix& TransformationMatrix::translate(const Vector3d& vector) {
   mov.at(2, 3) = vector.z();
   
   *this *= mov;
+  return *this;
 }
 
 TransformationMatrix& TransformationMatrix::rotate(float angle, Axis axis) {
@@ -46,6 +48,8 @@ TransformationMatrix& TransformationMatrix::rotate(float angle, Axis axis) {
     case Z:
       return rotate(angle, Vector3d(0.0f, 0.0f, 1.0f));
   }
+  
+  return *this;
 }
 
 TransformationMatrix& TransformationMatrix::rotate(float angle, const Vector3d& vector) {
@@ -71,6 +75,18 @@ TransformationMatrix& TransformationMatrix::rotate(float angle, const Vector3d& 
   rot.at(2,2) = vector.z() * vector.z() * (anti_c) + c;
   
   *this *= rot;
+  return *this;
+}
+
+TransformationMatrix& TransformationMatrix::scale(const Vector3d& vector) {
+  static Matrix4d scale;
+  
+  scale.at(0, 0) = vector.x();
+  scale.at(1, 1) = vector.y();
+  scale.at(2, 2) = vector.z();
+  
+  *this *= scale;
+  return *this;
 }
 
 } /* namespace Dee */

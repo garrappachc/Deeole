@@ -1,5 +1,5 @@
 /*
- * cubeitem.cpp
+ * pointitem.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,36 @@
  *
  */
 
-#include "cubeitem.h"
+#include <GL/gl.h>
+
+#include "pointitem.h"
 
 namespace Dee {
 
-CubeItem::CubeItem(bool visible) :
-    Item({
-      
-      /* Front side */
-      { -0.5f,  0.5f, -0.5f },
-      {  0.5f,  0.5f, -0.5f },
-      {  0.5f, -0.5f, -0.5f },
-      
-      {  0.5f, -0.5f, -0.5f },
-      { -0.5f, -0.5f, -0.5f },
-      { -0.5f,  0.5f, -0.5f },
-      
-      /* Left side */
-      { -0.5f,  0.5f, -0.5f },
-      { -0.5f,  0.5f,  0.5f },
-      { -0.5f, -0.5f,  0.5f },
+PointItem::PointItem(bool visible) :
+    Item({{0.0f, 0.0f, 0.0f}}, visible),
+    __size(1.0f) {}
 
-      { -0.5f, -0.5f,  0.5f },
-      { -0.5f, -0.5f, -0.5f },
-      { -0.5f,  0.5f, -0.5f }
-      
-    }, visible) {}
+void PointItem::setSize(float size) {
+  __size = size;
+}
+
+void PointItem::render() {
+  
+  glPushMatrix();
+  glEnable(GL_POINT_SMOOTH);
+  
+  glMultMatrixf(transform());
+  glColor3f(1.0f, 1.0f, 1.0f);
+  
+  glPointSize(__size);
+  
+  glVertexPointer(4, GL_FLOAT, 0, &vertices()[0]);
+  glDrawArrays(GL_POINTS, 0, vertices().size());
+  
+  glDisable( GL_POINT_SMOOTH );
+  glPopMatrix();
+}
 
 
 } /* namespace Dee */

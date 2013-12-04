@@ -59,6 +59,7 @@ template <typename T, int N>
     
     Matrix& operator =(const Matrix& other) {
       memcpy(__data, other.__data, size() * sizeof(T));
+      return *this;
     }
     
     constexpr int dimension() {

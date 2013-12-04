@@ -38,6 +38,8 @@ public:
   TransformationMatrix& rotate(float angle, Axis axis);
   TransformationMatrix& rotate(float angle, const Vector3d& vector);
   
+  TransformationMatrix& scale(const Vector3d& vector);
+  
 };
 
 } /* namespace Dee */

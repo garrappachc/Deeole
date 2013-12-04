@@ -1,5 +1,5 @@
 /*
- * cubeitem.cpp
+ * trianglestripitem.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,44 @@
  *
  */
 
-#include "cubeitem.h"
+#include <GL/gl.h>
+
+#include "trianglestripitem.h"
 
 namespace Dee {
 
-CubeItem::CubeItem(bool visible) :
+TriangleStripItem::TriangleStripItem(int triangles, bool visible) :
     Item({
       
       /* Front side */
-      { -0.5f,  0.5f, -0.5f },
-      {  0.5f,  0.5f, -0.5f },
-      {  0.5f, -0.5f, -0.5f },
+      {  0.0f,  0.0f, -0.5f },
+      {  0.5f,  1.0f, -0.5f },
+      {  1.0f,  0.0f, -0.5f }
       
-      {  0.5f, -0.5f, -0.5f },
-      { -0.5f, -0.5f, -0.5f },
-      { -0.5f,  0.5f, -0.5f },
-      
-      /* Left side */
-      { -0.5f,  0.5f, -0.5f },
-      { -0.5f,  0.5f,  0.5f },
-      { -0.5f, -0.5f,  0.5f },
+    }, visible) {
+  
+  float y = 1.0f;
+  float x = 1.5f;
+  
+  for (int i = 1; i < triangles; ++i) {
+    vertices().push_back({x, y, -0.5f});
+    x += 0.5f;
+    y = 1.0f - y;
+  }
+}
 
-      { -0.5f, -0.5f,  0.5f },
-      { -0.5f, -0.5f, -0.5f },
-      { -0.5f,  0.5f, -0.5f }
-      
-    }, visible) {}
+void TriangleStripItem::render() {
+  
+  glPushMatrix();
+  
+  glMultMatrixf(transform());
+  glColor3f(1.0f, 1.0f, 1.0f);
+  
+  glVertexPointer(4, GL_FLOAT, 0, &vertices()[0]);
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, vertices().size());
+  
+  glPopMatrix();
+}
 
 
 } /* namespace Dee */
