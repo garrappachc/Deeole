@@ -426,7 +426,7 @@ template <typename T, unsigned N>
      *          and _other_.
      */
     Vector cross(const Vector<T, N>& other) const {
-      static_assert(N == 3, "Cross product implemented only for 3-D vectors");
+      static_assert(N == 3, "Cross product available only for 3-D vectors");
       
       return Vector<T, 3>(
         (__data[1] * other[2]) - (__data[2] * other[1]),

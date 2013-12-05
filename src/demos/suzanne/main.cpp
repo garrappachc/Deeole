@@ -35,7 +35,6 @@ private:
 
 int main(int argc, char** argv) {
   Dee::Application app(argc, argv);
-  app.window()->setFullscreen(true);
   
   app.beforeRender.connect([=]() {
     const Dee::Keyboard* keyboard = Dee::Application::input()->keyboard();
