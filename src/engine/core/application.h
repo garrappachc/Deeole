@@ -185,6 +185,10 @@ public:
     return singleton().__window;
   }
   
+  inline static Cursor* cursor() {
+    return singleton().__cursor;
+  }
+  
   /**
    * Obtains the currently working scene manager.
    * 

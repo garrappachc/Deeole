@@ -20,5 +20,13 @@
 #include "cursor.h"
 
 namespace Dee {
+  
+void Cursor::show() {
+  setVisible(true);
+}
+
+void Cursor::hide() {
+  setVisible(false);
+}
 
 } /* namespace Dee */

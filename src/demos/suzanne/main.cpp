@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "core/application.h"
+#include "core/cursor.h"
 #include "core/inputhandler.h"
 #include "core/keyboard.h"
 #include "core/mouse.h"
@@ -35,6 +36,7 @@ private:
 
 int main(int argc, char** argv) {
   Dee::Application app(argc, argv);
+  app.cursor()->hide();
   
   app.beforeRender.connect([=]() {
     const Dee::Keyboard* keyboard = Dee::Application::input()->keyboard();
@@ -82,6 +84,11 @@ int main(int argc, char** argv) {
     
     const Dee::Mouse* mouse = Dee::Application::input()->mouse();
     camera.rotate(mouse->motion());
+    
+    int x = deeApp->window()->width() / 2;
+    int y = deeApp->window()->height() / 2;
+    
+    deeApp->cursor()->setPosition(x, y);
   });
   
   Dee::CubeItem item;

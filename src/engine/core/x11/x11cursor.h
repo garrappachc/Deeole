@@ -29,6 +29,7 @@ namespace Dee {
 class X11Cursor : public Cursor {
 public:
   void setPosition(int x, int y) override;
+  void setVisible(bool visible) override;
 };
 
 } /* namespace Dee */

@@ -28,6 +28,10 @@ class Cursor {
   
 public:
   virtual void setPosition(int x, int y) = 0;
+  virtual void setVisible(bool visible) = 0;
+  
+  void show();
+  void hide();
   
 };
 

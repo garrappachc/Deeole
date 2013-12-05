@@ -35,4 +35,27 @@ void X11Cursor::setPosition(int x, int y) {
   XFlush(X11::display());
 }
 
+void X11Cursor::setVisible(bool visible) {
+  X11Window* window = dynamic_cast<X11Window*>(deeApp->window());
+  DeeAssert(window);
+  
+  if (!visible) {
+    static char noData[] = { 0,0,0,0,0,0,0,0 };
+    
+   ::Cursor invisibleCursor;
+   ::Pixmap bitmapEmpty;
+   ::XColor black;
+   
+   black.red = black.green = black.blue = 0;
+   
+   bitmapEmpty = XCreateBitmapFromData(X11::display(), window->handle(), noData, 8, 8);
+   invisibleCursor = XCreatePixmapCursor(X11::display(), bitmapEmpty, bitmapEmpty, &black, &black, 0, 0);
+   XDefineCursor(X11::display(), window->handle(), invisibleCursor);
+   
+   XFreeCursor(X11::display(), invisibleCursor);
+  } else {
+    XUndefineCursor(X11::display(), window->handle());
+  }
+}
+
 } /* namespace Dee */
