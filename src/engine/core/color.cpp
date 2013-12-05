@@ -1,5 +1,5 @@
 /*
- * item.cpp
+ * color.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,34 +17,43 @@
  *
  */
 
-#include <GL/gl.h>
+#include <map>
+#include <utility>
 
-#include "item.h"
+#include "utils/logger.h"
+
+#include "color.h"
 
 namespace Dee {
+  
+static const std::map<std::string, Color> ColorMap({
+  std::make_pair("black", Color(0, 0, 0)),
+  std::make_pair("white", Color(255, 255, 255)),
+  std::make_pair("red",   Color(255, 0, 0)),
+  std::make_pair("green", Color(0, 255, 0)),
+  std::make_pair("blue",  Color(0, 0, 255))
+});
+  
+Color::Color() :
+    __r(0),
+    __g(0),
+    __b(0),
+    __a(255) {}
 
-Item::Item(bool visible) :
-    Renderable(visible) {}
+Color::Color(int r, int g, int b, int a) :
+    __r(r),
+    __g(g),
+    __b(b),
+    __a(a) {}
 
-Item::Item(std::initializer_list<Vertex>&& vertices, bool visible) :
-    Renderable(visible),
-    __vertices(std::forward<std::initializer_list<Vertex>>(vertices)) {}
-
-void Item::setColor(Color color) {
-  __color = color;
+Color::Color(const std::string& name) {
+  if (ColorMap.count(name) > 0) {
+    *this = ColorMap.find(name)->second;
+  } else {
+    Logger::warning("Color: invalid color name: %s", name);
+  }
 }
 
-void Item::render() {
-  
-  glPushMatrix();
-  
-  glMultMatrixf(__transform);
-  glColor4f(__color.fr(), __color.fg(), __color.fb(), __color.fa());
-  
-  glVertexPointer(4, GL_FLOAT, 0, &__vertices[0]);
-  glDrawArrays(GL_TRIANGLES, 0, __vertices.size());
-  
-  glPopMatrix();
-}
+
 
 } /* namespace Dee */

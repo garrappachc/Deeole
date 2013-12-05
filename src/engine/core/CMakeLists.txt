@@ -3,6 +3,7 @@ deeole_subdirectory_start(core)
 set (core_SRCS
   application.cpp
   camera.cpp
+  color.cpp
   cursor.cpp
   deeglobal.cpp
   freecamera.cpp

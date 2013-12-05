@@ -25,6 +25,7 @@
 
 #include "core/deeglobal.h"
 
+#include "core/color.h"
 #include "core/renderable.h"
 #include "core/transformationmatrix.h"
 #include "core/vertex.h"
@@ -36,6 +37,8 @@ class __DeeExport__ Item : public Renderable {
 public:
   Item(bool visible = true);
   Item(std::initializer_list<Vertex>&& vertices, bool visible = true);
+  
+  void setColor(Color color);
   
   inline void translate(const Vector3d& vector) {
     __transform.translate(vector);
@@ -65,13 +68,17 @@ public:
     return __transform;
   }
   
+  inline const Color& color() const {
+    return __color;
+  }
+  
 protected:
   void render() override;
   
 private:
   std::vector<Vertex> __vertices;
-  
   TransformationMatrix __transform;
+  Color __color;
   
 };
 

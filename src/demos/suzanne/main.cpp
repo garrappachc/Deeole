@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "core/application.h"
+#include "core/color.h"
 #include "core/cursor.h"
 #include "core/inputhandler.h"
 #include "core/keyboard.h"
@@ -92,6 +93,7 @@ int main(int argc, char** argv) {
   });
   
   Dee::CubeItem item;
+  item.setColor(Dee::Color("red"));
   
   std::cout << sizeof(Dee::Vertex) << std::endl;
   
