@@ -23,12 +23,15 @@
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <iostream>
 #include <utility>
 #include <type_traits>
 
 #include "core/deeglobal.h"
 
 #include "core/types.h"
+
+#include "utils/output.h"
 
 namespace Dee {
   
@@ -433,6 +436,28 @@ template <typename T, unsigned N>
         (__data[2] * other[0]) - (__data[0] * other[2]),
         (__data[0] * other[1]) - (__data[1] * other[0])
       );
+    }
+    
+    friend Output& operator <<(Output& stream, const Vector& vector) {
+      stream << "{";
+      for (int i = 0; i < vector.size(); ++i) {
+        stream << vector[i];
+        if (i < vector.size() - 1)
+          stream << ", ";
+      }
+      
+      stream << "}";
+    }
+    
+    friend std::ostream& operator <<(std::ostream& stream, const Vector& vector) {
+      stream << '{';
+      for (int i = 0; i < vector.size(); ++i) {
+        stream << vector[i];
+        if (i < vector.size() - 1)
+          stream << ", ";
+      }
+      
+      stream << '}';
     }
     
   private:

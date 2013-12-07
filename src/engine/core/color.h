@@ -52,6 +52,8 @@ public:
    */
   Color(int r, int g, int b, int a = 255);
   
+  Color(float r, float g, float b, float a = 1.0f);
+  
   /**
    * Constructs color from the given name.
    * 
@@ -61,39 +63,24 @@ public:
    * - red
    * - green
    * - blue
+   * - yellow
    */
   Color(const std::string& name);
   
-  inline const int r() const {
+  inline const float r() const {
     return __r;
   }
   
-  inline const int g() const {
+  inline const float g() const {
     return __g;
   }
   
-  inline const int b() const {
+  inline const float b() const {
     return __b;
   }
   
-  inline const int a() const {
+  inline const float a() const {
     return __a;
-  }
-  
-  inline const float fr() const {
-    return static_cast<float>(__r) / 255.0f;
-  }
-  
-  inline const float fg() const {
-    return static_cast<float>(__g) / 255.0f;
-  }
-  
-  inline const float fb() const {
-    return static_cast<float>(__b) / 255.0f;
-  }
-  
-  inline const float fa() const {
-    return static_cast<float>(__a) / 255.0f;
   }
   
   Color(const Color& other) = default;
@@ -101,10 +88,10 @@ public:
   Color& operator =(const Color& other) = default;
   
 private:
-  int __r;
-  int __g;
-  int __b;
-  int __a;
+  float __r;
+  float __g;
+  float __b;
+  float __a;
   
 }; /** @} */
 

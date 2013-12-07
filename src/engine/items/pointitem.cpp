@@ -24,7 +24,9 @@
 namespace Dee {
 
 PointItem::PointItem(bool visible) :
-    Item({{0.0f, 0.0f, 0.0f}}, visible),
+    Item({
+      Mesh({{0.0f, 0.0f, 0.0f}})
+    }, visible),
     __size(1.0f) {}
 
 void PointItem::setSize(float size) {
@@ -41,8 +43,8 @@ void PointItem::render() {
   
   glPointSize(__size);
   
-  glVertexPointer(4, GL_FLOAT, 0, &vertices()[0]);
-  glDrawArrays(GL_POINTS, 0, vertices().size());
+  glVertexPointer(4, GL_FLOAT, 0, &(meshes()[0].vertices()[0]));
+  glDrawArrays(GL_POINTS, 0, meshes()[0].vertices().size());
   
   glDisable( GL_POINT_SMOOTH );
   glPopMatrix();

@@ -11,6 +11,7 @@ set (core_SRCS
   inputhandler.cpp
   item.cpp
   keyboard.cpp
+  mesh.cpp
   modelviewmatrix.cpp
   mouse.cpp
   mutex.cpp

@@ -26,12 +26,29 @@ namespace Dee {
 Item::Item(bool visible) :
     Renderable(visible) {}
 
-Item::Item(std::initializer_list<Vertex>&& vertices, bool visible) :
+Item::Item(std::initializer_list<Mesh>&& meshes, bool visible) :
     Renderable(visible),
-    __vertices(std::forward<std::initializer_list<Vertex>>(vertices)) {}
+    __meshes(std::forward<std::initializer_list<Mesh>>(meshes)) {}
+
+void Item::translate(const Vector3d& vector) {
+  __transform.translate(vector);
+}
+
+void Item::rotate(float angle, Axis axis) {
+  __transform.rotate(angle, axis);
+}
+
+void Item::scale(const Vector3d& vector) {
+  __transform.scale(vector);
+}
+
+void Item::reset() {
+  __transform.loadIdentity();
+}
 
 void Item::setColor(Color color) {
-  __color = color;
+  for (Mesh& m: __meshes)
+    m.setColor(std::forward<Color>(color));
 }
 
 void Item::render() {
@@ -39,10 +56,13 @@ void Item::render() {
   glPushMatrix();
   
   glMultMatrixf(__transform);
-  glColor4f(__color.fr(), __color.fg(), __color.fb(), __color.fa());
   
-  glVertexPointer(4, GL_FLOAT, 0, &__vertices[0]);
-  glDrawArrays(GL_TRIANGLES, 0, __vertices.size());
+  for (Mesh& m: __meshes) {
+    glColor4f(m.color().r(), m.color().g(), m.color().b(), m.color().a());
+    
+    glVertexPointer(4, GL_FLOAT, 0, &m.vertices()[0]);
+    glDrawArrays(GL_TRIANGLES, 0, m.vertices().size());
+  }
   
   glPopMatrix();
 }

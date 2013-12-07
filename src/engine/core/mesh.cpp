@@ -1,5 +1,5 @@
 /*
- * quaditem.cpp
+ * mesh.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,24 +17,15 @@
  *
  */
 
-#include "quaditem.h"
+#include "mesh.h"
 
 namespace Dee {
+  
+Mesh::Mesh(std::initializer_list<Vertex>&& vertices) :
+    __vertices(std::forward<std::initializer_list<Vertex>>(vertices)) {}
 
-QuadItem::QuadItem(bool visible) :
-    Item({
-      Mesh({
-        /* Front side */
-        { -0.5f,  0.5f, -0.5f },
-        {  0.5f,  0.5f, -0.5f },
-        {  0.5f, -0.5f, -0.5f },
-        
-        {  0.5f, -0.5f, -0.5f },
-        { -0.5f, -0.5f, -0.5f },
-        { -0.5f,  0.5f, -0.5f }
-      })
-      
-    }, visible) {}
-
+void Mesh::setColor(Color color) {
+  __color = color;
+}
 
 } /* namespace Dee */

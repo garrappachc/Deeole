@@ -65,7 +65,8 @@ int main(int argc, char** argv) {
   });
   
   Dee::FreeCamera camera;
-  camera.setEye({0.0f, 0.0f, -1.0f});
+  camera.setEye({0.0f, 0.5f, 10.0f});
+  camera.setLookAt({0.019017f, -0.0207905f, -0.999603f});
   app.sceneManager()->activeScene()->setCamera(&camera);
   
   app.beforeRender.connect([=, &camera]() {
@@ -90,12 +91,17 @@ int main(int argc, char** argv) {
     int y = deeApp->window()->height() / 2;
     
     deeApp->cursor()->setPosition(x, y);
+    
+    std::cout << "eye: " << camera.eye() << std::endl << "lookAt: " << camera.lookAt() << std::endl;
   });
   
   Dee::CubeItem item;
-  item.setColor(Dee::Color("red"));
-  
-  std::cout << sizeof(Dee::Vertex) << std::endl;
+  item.front().setColor(Dee::Color("blue"));
+  item.left().setColor(Dee::Color("green"));
+  item.right().setColor(Dee::Color("red"));
+  item.back().setColor(Dee::Color("yellow"));
+  item.top().setColor(Dee::Color("white"));
+  item.bottom().setColor(Dee::Color("white"));
   
   app.sceneManager()->activeScene()->addRenderable(&item);
   
@@ -107,8 +113,8 @@ int main(int argc, char** argv) {
   
   Dee::Timer timer2(10);
   timer2.timeout.connect([=, &item]() {
-    item.rotate(0.5f, Dee::Z);
-    item.translate({ 0.0f, 0.01f, 0.0f });
+    item.rotate(0.5f, Dee::Y);
+//     item.translate({ 0.0f, 0.01f, 0.0f });
   });
   timer2.start();
   

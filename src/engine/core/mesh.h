@@ -1,5 +1,5 @@
 /*
- * quaditem.cpp
+ * mesh.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,24 +17,50 @@
  *
  */
 
-#include "quaditem.h"
+#ifndef MESH_H
+#define MESH_H
+
+#include <vector>
+#include <initializer_list>
+
+#include "core/deeglobal.h"
+
+#include "core/color.h"
+#include "core/vertex.h"
 
 namespace Dee {
 
-QuadItem::QuadItem(bool visible) :
-    Item({
-      Mesh({
-        /* Front side */
-        { -0.5f,  0.5f, -0.5f },
-        {  0.5f,  0.5f, -0.5f },
-        {  0.5f, -0.5f, -0.5f },
-        
-        {  0.5f, -0.5f, -0.5f },
-        { -0.5f, -0.5f, -0.5f },
-        { -0.5f,  0.5f, -0.5f }
-      })
-      
-    }, visible) {}
-
+class __DeeExport__ Mesh {
+  
+public:
+  Mesh(std::initializer_list<Vertex>&& vertices);
+  
+  void setColor(Color color);
+  
+  inline const std::vector<Vertex>& vertices() const {
+    return __vertices;
+  }
+  
+  inline std::vector<Vertex>& vertices() {
+    return __vertices;
+  }
+  
+  inline const Color& color() const {
+    return __color;
+  }
+  
+  inline Color& color() {
+    return __color;
+  }
+  
+private:
+  std::vector<Vertex> __vertices;
+  Color __color;
+  
+  
+  
+};
 
 } /* namespace Dee */
+
+#endif // MESH_H

@@ -310,6 +310,28 @@ template <typename T, unsigned N>
       return Vector<T, N>(__data);
     }
     
+    friend Output& operator <<(Output& stream, const Point& point) {
+      stream << "{";
+      for (int i = 0; i < point.dimension(); ++i) {
+        stream << point[i];
+        if (i < point.dimension() - 1)
+          stream << ", ";
+      }
+      
+      stream << "}";
+    }
+    
+    friend std::ostream& operator <<(std::ostream& stream, const Point& point) {
+      stream << '{';
+      for (int i = 0; i < point.dimension(); ++i) {
+        stream << point[i];
+        if (i < point.dimension() - 1)
+          stream << ", ";
+      }
+      
+      stream << '}';
+    }
+    
   private:
     T __data[N];
     

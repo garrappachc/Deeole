@@ -32,6 +32,53 @@ public:
   
   CubeItem(bool visible = true);
   
+  inline const Mesh& front() const {
+    return meshes()[0];
+  }
+  
+  inline Mesh& front() {
+    return meshes()[0];
+  }
+  
+  inline const Mesh& left() const {
+    return meshes()[1];
+  }
+  
+  inline Mesh& left() {
+    return meshes()[1];
+  }
+  
+  inline const Mesh& right() const {
+    return meshes()[2];
+  }
+  
+  inline Mesh& right() {
+    return meshes()[2];
+  }
+  
+  inline const Mesh& top() const {
+    return meshes()[3];
+  }
+  
+  inline Mesh& top() {
+    return meshes()[3];
+  }
+  
+  inline const Mesh& bottom() const {
+    return meshes()[4];
+  }
+  
+  inline Mesh& bottom() {
+    return meshes()[4];
+  }
+  
+  inline const Mesh& back() const {
+    return meshes()[5];
+  }
+  
+  inline Mesh& back() {
+    return meshes()[5];
+  }
   
 };
 

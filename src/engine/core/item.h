@@ -25,10 +25,9 @@
 
 #include "core/deeglobal.h"
 
-#include "core/color.h"
+#include "core/mesh.h"
 #include "core/renderable.h"
 #include "core/transformationmatrix.h"
-#include "core/vertex.h"
 
 namespace Dee {
 
@@ -36,49 +35,40 @@ class __DeeExport__ Item : public Renderable {
   
 public:
   Item(bool visible = true);
-  Item(std::initializer_list<Vertex>&& vertices, bool visible = true);
+  Item(std::initializer_list<Mesh>&& meshes, bool visible = true);
+  
+  void translate(const Vector3d& vector);
+  
+  void rotate(float angle, Axis axis);
+  
+  void scale(const Vector3d& vector);
+  
+  void reset();
   
   void setColor(Color color);
   
-  inline void translate(const Vector3d& vector) {
-    __transform.translate(vector);
+  inline const std::vector<Mesh>& meshes() const {
+    return __meshes;
   }
   
-  inline void rotate(float angle, Axis axis) {
-    __transform.rotate(angle, axis);
+  inline std::vector<Mesh>& meshes() {
+    return __meshes;
   }
-  
-  inline void scale(const Vector3d& vector) {
-    __transform.scale(vector);
-  }
-  
-  inline void reset() {
-    __transform.loadIdentity();
-  }
-  
-  inline const std::vector<Vertex>& vertices() const {
-    return __vertices;
-  }
-  
-  inline std::vector<Vertex>& vertices() {
-      return __vertices;
-    }
   
   inline const TransformationMatrix& transform() const {
     return __transform;
   }
   
-  inline const Color& color() const {
-    return __color;
+  inline TransformationMatrix& transform() {
+    return __transform;
   }
   
 protected:
   void render() override;
   
 private:
-  std::vector<Vertex> __vertices;
+  std::vector<Mesh> __meshes;
   TransformationMatrix __transform;
-  Color __color;
   
 };
 

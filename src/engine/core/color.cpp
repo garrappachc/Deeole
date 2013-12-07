@@ -26,14 +26,21 @@
 
 namespace Dee {
   
+  namespace {
+    float i2f(int c) {
+      return static_cast<float>(c) / 255.0f;
+    }
+  }
+
 static const std::map<std::string, Color> ColorMap({
-  std::make_pair("black", Color(0, 0, 0)),
-  std::make_pair("white", Color(255, 255, 255)),
-  std::make_pair("red",   Color(255, 0, 0)),
-  std::make_pair("green", Color(0, 255, 0)),
-  std::make_pair("blue",  Color(0, 0, 255))
+  std::make_pair("black",  Color(0, 0, 0)),
+  std::make_pair("white",  Color(255, 255, 255)),
+  std::make_pair("red",    Color(255, 0, 0)),
+  std::make_pair("green",  Color(0, 255, 0)),
+  std::make_pair("blue",   Color(0, 0, 255)),
+  std::make_pair("yellow", Color(255, 255, 0))
 });
-  
+
 Color::Color() :
     __r(0),
     __g(0),
@@ -41,6 +48,12 @@ Color::Color() :
     __a(255) {}
 
 Color::Color(int r, int g, int b, int a) :
+    __r(i2f(r)),
+    __g(i2f(g)),
+    __b(i2f(b)),
+    __a(i2f(a)) {}
+
+Color::Color(float r, float g, float b, float a) :
     __r(r),
     __g(g),
     __b(b),
@@ -53,7 +66,6 @@ Color::Color(const std::string& name) {
     Logger::warning("Color: invalid color name: %s", name);
   }
 }
-
 
 
 } /* namespace Dee */
