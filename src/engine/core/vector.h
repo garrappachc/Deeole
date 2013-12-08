@@ -447,6 +447,7 @@ template <typename T, unsigned N>
       }
       
       stream << "}";
+      return stream;
     }
     
     friend std::ostream& operator <<(std::ostream& stream, const Vector& vector) {
@@ -458,6 +459,7 @@ template <typename T, unsigned N>
       }
       
       stream << '}';
+      return stream;
     }
     
   private:

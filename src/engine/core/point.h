@@ -319,6 +319,7 @@ template <typename T, unsigned N>
       }
       
       stream << "}";
+      return stream;
     }
     
     friend std::ostream& operator <<(std::ostream& stream, const Point& point) {
@@ -330,6 +331,7 @@ template <typename T, unsigned N>
       }
       
       stream << '}';
+      return stream;
     }
     
   private:
