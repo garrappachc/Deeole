@@ -25,6 +25,8 @@ Mesh::Mesh(std::initializer_list<Vertex>&& vertices) :
     __vertices(std::forward<std::initializer_list<Vertex>>(vertices)) {}
 
 void Mesh::setColor(Color color) {
+  for (Vertex& v: __vertices)
+    color.dumpTo(v.colors());
   __color = color;
 }
 

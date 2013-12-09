@@ -25,13 +25,26 @@
 namespace Dee {
 
 Vertex::Vertex() {
-  memset(__data, 0, sizeof(__data));
+  memset(__coords, 0, sizeof(__coords));
+  memset(__colors, 0, sizeof(__colors));
 }
 
 Vertex::Vertex(std::initializer_list<float>&& coords) {
-  std::move(coords.begin(), coords.end(), __data);
+  std::move(coords.begin(), coords.end(), __coords);
   if (coords.size() < 4)
-    __data[3] = 1.0f;
+    __coords[3] = 1.0f;
+  
+  memset(__colors, 0, sizeof(__colors));
+}
+
+Vertex::Vertex(std::initializer_list< float >&& coords, std::initializer_list< float >&& colors) {
+  std::move(coords.begin(), coords.end(), __coords);
+  if (coords.size() < 4)
+    __coords[3] = 1.0f;
+  
+  std::move(colors.begin(), colors.end(), __colors);
+  if (colors.size() < 4)
+    __colors[3] = 1.0f;
 }
 
 

@@ -67,6 +67,8 @@ public:
    */
   Color(const std::string& name);
   
+  void dumpTo(float* array) const;
+  
   inline const float r() const {
     return __r;
   }

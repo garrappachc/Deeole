@@ -57,8 +57,6 @@ private:
   std::vector<Vertex> __vertices;
   Color __color;
   
-  
-  
 };
 
 } /* namespace Dee */

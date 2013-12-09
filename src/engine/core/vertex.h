@@ -33,16 +33,35 @@ public:
   
   Vertex(std::initializer_list<float>&& coords);
   
+  Vertex(std::initializer_list<float>&& coords, std::initializer_list<float>&& colors);
+  
   inline operator float*() {
-    return __data;
+    return __coords;
   }
     
   inline operator const float*() const {
-    return __data;
+    return __coords;
+  }
+  
+  inline float* coords() {
+    return __coords;
+  }
+  
+  inline const float* coords() const {
+    return __coords;
+  }
+  
+  inline float* colors() {
+    return __colors;
+  }
+  
+  inline const float* colors() const {
+    return __colors;
   }
   
 private:
-  float __data[4];
+  float __coords[4];
+  float __colors[4];
   
 };
 

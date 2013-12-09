@@ -67,5 +67,11 @@ Color::Color(const std::string& name) {
   }
 }
 
+void Color::dumpTo(float* array) const {
+  array[0] = __r;
+  array[1] = __g;
+  array[2] = __b;
+  array[3] = __a;
+}
 
 } /* namespace Dee */

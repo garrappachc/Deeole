@@ -58,6 +58,7 @@ void Scene::render() {
     __camera->setView();
   
   glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_COLOR_ARRAY);
   
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -83,6 +84,7 @@ void Scene::render() {
   for (Renderable* r: __objects)
     r->render();
   
+  glDisableClientState(GL_COLOR_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
 }
 
