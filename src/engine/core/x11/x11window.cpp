@@ -101,8 +101,8 @@ void X11Window::__setupWindow() {
                       | VisibilityChangeMask
                       | KeyPressMask
                       | KeyReleaseMask
-                      | PointerMotionMask
                       | StructureNotifyMask
+                      | PointerMotionMask
                       ;
   
   winAttrs.border_pixel = 0,

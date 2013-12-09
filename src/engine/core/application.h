@@ -35,6 +35,7 @@ namespace Dee {
   class InputHandler;
   class SceneManager;
   class SlotQueue;
+  class UserInterface;
   class Window;
 
 /**
@@ -210,10 +211,11 @@ private:
   
   void __parseArgs(int argc, char** argv);
   
-  InputHandler* __inputHandler;
-  SlotQueue*    __slotQueue;
-  Window*       __window;
-  Cursor*       __cursor;
+  InputHandler*  __inputHandler;
+  SlotQueue*     __slotQueue;
+  UserInterface* __userInterface;
+  Window*        __window;
+  Cursor*        __cursor;
   
   SceneManager* __sceneManager; /**< Currently working scene manager */
   

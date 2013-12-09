@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
   
   Dee::FreeCamera camera;
   camera.setEye({0.0f, 0.5f, 10.0f});
-  camera.setLookAt({0.019017f, -0.0207905f, -0.999603f});
+  camera.setLookAt({0.0f, 0.0, -1.0f});
   app.sceneManager()->activeScene()->setCamera(&camera);
   
   app.beforeRender.connect([=, &camera]() {
@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
     
     deeApp->cursor()->setPosition(x, y);
     
-    std::cout << "eye: " << camera.eye() << std::endl << "lookAt: " << camera.lookAt() << std::endl;
+//     std::cout << "LookAt: " << camera.lookAt() << std::endl;
   });
   
   Dee::CubeItem item;

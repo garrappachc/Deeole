@@ -1,5 +1,5 @@
 /*
- * x11cursor.h
+ * x11userinterface.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,24 +17,30 @@
  *
  */
 
-#ifndef X11CURSOR_H
-#define X11CURSOR_H
+#ifndef X11USERINTERFACE_H
+#define X11USERINTERFACE_H
 
 #include "core/deeglobal.h"
 
-#include "core/cursor.h"
+#include "core/object.h"
+#include "core/userinterface.h"
 
 namespace Dee {
 
-class __DeeExport__ X11Cursor : public Cursor {
-
-public:
-  void setPosition(int x, int y) override;
-  void setVisible(bool visible) override;
+class X11UserInterface : public UserInterface, public Object {
   
+public:
+  X11UserInterface();
+  ~X11UserInterface();
+  
+  Window* getWindow() override;
+  Cursor* getCursor() override;
+  void processEvents() override;
+  
+  DeeSlot afterFirstFrame();
   
 };
 
 } /* namespace Dee */
 
-#endif // X11CURSOR_H
+#endif // X11USERINTERFACE_H

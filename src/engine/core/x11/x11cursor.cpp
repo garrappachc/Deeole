@@ -17,6 +17,7 @@
  *
  */
 
+#include <cstring>
 #include <X11/X.h>
 
 #include "core/application.h"

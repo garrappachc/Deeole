@@ -28,6 +28,14 @@ Mouse::Mouse() :
     __dy(0) {}
 
 void Mouse::motionEvent(int x, int y) {
+  static bool initialized = false;
+  
+  if (!initialized) {
+    __x = x;
+    __y = y;
+    initialized = true;
+  }
+  
   __dx = __x - x;
   __x = x;
   

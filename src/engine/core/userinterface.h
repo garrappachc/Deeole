@@ -24,7 +24,6 @@
 
 namespace Dee {
   
-  class Application;
   class Cursor;
   class Window;
 
@@ -33,18 +32,12 @@ namespace Dee {
  */
 class __DeeHide__ UserInterface {
   
-  friend class Application;
-  
 public:
-  UserInterface() = delete;
+  virtual ~UserInterface() = default;
   
-private:
-  static Window* getPlatformWindow();
-  static Cursor* getPlatformCursor();
-  
-  static void init();
-  static void processEvents();
-  static void close();
+  virtual Window* getWindow() = 0;
+  virtual Cursor* getCursor() = 0;
+  virtual void processEvents() = 0;
   
 };
 

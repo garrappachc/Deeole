@@ -33,6 +33,7 @@ if (LINUX)
   set (core_SRCS ${core_SRCS}
     x11/x11bridge.cpp
     x11/x11cursor.cpp
+    x11/x11userinterface.cpp
     x11/x11window.cpp
   )
 endif (LINUX)

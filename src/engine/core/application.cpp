@@ -27,6 +27,11 @@
 #include "core/window.h"
 #include "utils/logger.h"
 
+#ifdef LINUX
+# include "core/x11/x11userinterface.h"
+# define PlatformUserInterface X11UserInterface
+#endif
+
 #include "application.h"
 
 namespace Dee {
@@ -37,6 +42,7 @@ Application::Application(int argc, char** argv) :
     afterRender(DirectConnection),
     __inputHandler(new InputHandler()),
     __slotQueue(new SlotQueue),
+    __userInterface(nullptr),
     __window(nullptr),
     __sceneManager(nullptr),
     __isRunning(false),
@@ -44,9 +50,9 @@ Application::Application(int argc, char** argv) :
   
   __parseArgs(argc, argv);
   
-  UserInterface::init();
+  __userInterface = new PlatformUserInterface();
   
-  __window = UserInterface::getPlatformWindow();
+  __window = __userInterface->getWindow();
   __window->closed.connect(this, &Application::quit);
   
   if (hasArgument("title"))
@@ -57,7 +63,7 @@ Application::Application(int argc, char** argv) :
   if (!hasArgument("no-fullscreen"))
     __window->setFullscreen(true);
   
-  __cursor = UserInterface::getPlatformCursor();
+  __cursor = __userInterface->getCursor();
   
   __sceneManager = new SceneManager();
   __defaultSceneManager = __sceneManager;
@@ -67,11 +73,8 @@ Application::Application(int argc, char** argv) :
 
 Application::~Application() {
   delete __window;
-  
-  UserInterface::close();
-  
+  delete __userInterface;
   delete __slotQueue;
-  
   delete __defaultSceneManager;
   Logger::debug("Application: destructed.");
 }
@@ -80,13 +83,12 @@ int Application::run() {
   Logger::debug("Application: running...");
   
   __window->show();
-  __window->swapBuffers();
   __cursor->setPosition(__window->width() / 2, __window->height() / 2);
+  __window->swapBuffers();
   
   __isRunning = true;
   while (__isRunning) {
-    UserInterface::processEvents();
-    
+    __userInterface->processEvents();
     emit beforeRender();
     
     __sceneManager->render();

@@ -58,6 +58,10 @@ public:
     return __glxVersion;
   }
   
+  inline static void captureMouseMotion(bool enable) {
+    __captureMouseMotion = enable;
+  }
+  
   X11Bridge() = delete;
   
 private:
@@ -68,6 +72,8 @@ private:
   
   static Display*   __display;
   static GlXVersion __glxVersion;
+  
+  static bool __captureMouseMotion;
 
 };
 

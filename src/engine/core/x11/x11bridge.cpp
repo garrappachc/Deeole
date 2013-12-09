@@ -32,6 +32,7 @@ namespace Dee {
 
 Display*              X11Bridge::__display = nullptr;
 X11Bridge::GlXVersion X11Bridge::__glxVersion = { 0, 0 };
+bool                  X11Bridge::__captureMouseMotion = false;
 
 void X11Bridge::openDisplay() {
   __display = XOpenDisplay(nullptr);
@@ -81,7 +82,8 @@ void X11Bridge::processEvents() {
         break;
         
       case MotionNotify:
-        deeApp->input()->mouseMotionEvent(event.xmotion.x, event.xmotion.y);
+        if (__captureMouseMotion)
+          deeApp->input()->mouseMotionEvent(event.xmotion.x, event.xmotion.y);
         break;
       
       case ConfigureNotify:
