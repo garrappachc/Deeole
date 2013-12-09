@@ -33,8 +33,6 @@ public:
   
   Vertex(std::initializer_list<float>&& coords);
   
-  Vertex(std::initializer_list<float>&& coords, std::initializer_list<float>&& colors);
-  
   inline operator float*() {
     return __coords;
   }

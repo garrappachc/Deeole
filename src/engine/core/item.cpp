@@ -58,8 +58,6 @@ void Item::render() {
   glMultMatrixf(__transform);
   
   for (Mesh& m: __meshes) {
-//     glColor4f(m.color().r(), m.color().g(), m.color().b(), m.color().a());
-    
     glVertexPointer(4, GL_FLOAT, sizeof(Vertex), m.vertices()[0].coords());
     glColorPointer(4, GL_FLOAT, sizeof(Vertex), m.vertices()[0].colors());
     glDrawArrays(GL_TRIANGLES, 0, m.vertices().size());

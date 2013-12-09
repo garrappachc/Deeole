@@ -73,16 +73,16 @@ int main(int argc, char** argv) {
     const Dee::Keyboard* keyboard = Dee::Application::input()->keyboard();
     
     if (keyboard->keyDown(Dee::Key::A))
-      camera.move({-0.01f, 0.0f, 0.0f});
+      camera.move({-0.05f, 0.0f, 0.0f});
     
     if (keyboard->keyDown(Dee::Key::D))
-      camera.move({0.01f, 0.0f, 0.0f});
+      camera.move({0.05f, 0.0f, 0.0f});
     
     if (keyboard->keyDown(Dee::Key::S))
-      camera.move({0.0f, 0.0f, -0.01f});
+      camera.move({0.0f, 0.0f, -0.05f});
     
     if (keyboard->keyDown(Dee::Key::W))
-      camera.move({0.0f, 0.0f, 0.01f});
+      camera.move({0.0f, 0.0f, 0.05f});
     
     const Dee::Mouse* mouse = Dee::Application::input()->mouse();
     camera.rotate(mouse->motion());

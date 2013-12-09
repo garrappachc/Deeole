@@ -37,15 +37,5 @@ Vertex::Vertex(std::initializer_list<float>&& coords) {
   memset(__colors, 0, sizeof(__colors));
 }
 
-Vertex::Vertex(std::initializer_list< float >&& coords, std::initializer_list< float >&& colors) {
-  std::move(coords.begin(), coords.end(), __coords);
-  if (coords.size() < 4)
-    __coords[3] = 1.0f;
-  
-  std::move(colors.begin(), colors.end(), __colors);
-  if (colors.size() < 4)
-    __colors[3] = 1.0f;
-}
-
 
 } /* namespace Dee */
