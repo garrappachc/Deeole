@@ -34,7 +34,7 @@ Scene::Scene() :
 Scene::~Scene() {}
 
 void Scene::clear() {
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -64,21 +64,26 @@ void Scene::render() {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_MULTISAMPLE);
   
   // Cull backfacing polygons
 //   glCullFace(GL_BACK);
 //   glEnable(GL_CULL_FACE);
   
   if (__hasAntyaliasing) {
+    glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_POLYGON_SMOOTH);
+    glEnable(GL_POINT_SMOOTH);
   } else {
+    glHint(GL_POINT_SMOOTH_HINT, GL_FASTEST);
     glHint(GL_LINE_SMOOTH_HINT, GL_FASTEST);
     glHint(GL_POLYGON_SMOOTH_HINT, GL_FASTEST);
     glDisable(GL_LINE_SMOOTH);
     glDisable(GL_POLYGON_SMOOTH);
+    glDisable(GL_POINT_SMOOTH);
   }
   
   for (Renderable* r: __objects)

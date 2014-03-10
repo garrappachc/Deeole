@@ -19,6 +19,7 @@ set_target_properties(${deeole_TARGET} PROPERTIES VERSION 1.0.0 SOVERSION 1)
 
 set(deeole_SUBDIRS
   core
+  events
   items
   utils
 )

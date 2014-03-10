@@ -2,9 +2,7 @@ deeole_subdirectory_start(items)
 
 set (items_SRCS
   cubeitem.cpp
-  pointitem.cpp
-  quaditem.cpp
-  triangleitem.cpp
+  sphereitem.cpp
 )
 deeole_subdirectory_sources(items "${items_SRCS}")
 

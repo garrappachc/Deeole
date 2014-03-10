@@ -1,6 +1,6 @@
 /*
- * pointitem.h
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * namechangeevent.cpp
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,35 +17,16 @@
  *
  */
 
-#ifndef POINTITEM_H
-#define POINTITEM_H
-
-#include "core/deeglobal.h"
-
-#include "core/item.h"
+#include "namechangeevent.h"
 
 namespace Dee {
 
-class PointItem : public Item {
-  
-public:
-  
-  PointItem(bool visible = true);
-  
-  void setSize(float size);
-  
-  inline float size() const {
-    return __size;
-  }
-  
-protected:
-  void render() override;
-  
-private:
-  float __size;
-  
-};
+NameChangeEvent::NameChangeEvent(std::string oldName, std::string newName) :
+     __oldName(oldName),
+     __newName(newName) {}
 
-} /* namespace Dee */
+std::string NameChangeEvent::name() const {
+  return "NameChangeEvent";
+}
 
-#endif // POINTITEM_H
+} /* namespace Dee  */

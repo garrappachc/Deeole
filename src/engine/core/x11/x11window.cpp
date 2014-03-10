@@ -21,6 +21,8 @@
 #include <GL/glx.h>
 
 #include "core/x11/x11bridge.h"
+#include "events/namechangeevent.h"
+#include "events/visibilitychangeevent.h"
 #include "utils/logger.h"
 
 #include "x11window.h"
@@ -40,15 +42,15 @@ void X11Window::swapBuffers() {
   glXSwapBuffers(X11::display(), __handle);
 }
 
-void X11Window::updateVisibility(bool visible) {
-  if (visible)
+void X11Window::visibilityChangeEvent(VisibilityChangeEvent* event) {
+  if (event->visible())
     XMapWindow(X11::display(), __handle);
   else
     XUnmapWindow(X11::display(), __handle);
 }
 
-void X11Window::updateName(const std::string& name) {
-  XStoreName(X11::display(), __handle, name.c_str());
+void X11Window::nameChangeEvent(NameChangeEvent* event) {
+  XStoreName(X11::display(), __handle, event->newName().c_str());
 }
 
 void X11Window::updateSize(int width, int height) {

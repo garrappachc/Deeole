@@ -1,6 +1,6 @@
 /*
- * quaditem.h
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * namechangeevent.h
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,24 +17,41 @@
  *
  */
 
-#ifndef QUADITEM_H
-#define QUADITEM_H
+#ifndef NAMECHANGEEVENT_H
+#define NAMECHANGEEVENT_H
 
 #include "core/deeglobal.h"
-
-#include "core/item.h"
+#include "events/event.h"
 
 namespace Dee {
 
-class QuadItem : public Item {
-  
+/**
+ * \ingroup Core
+ * @{
+ * 
+ * The NameChangeEvent is called when user requests the window title
+ * to change.
+ */
+class __DeeExport__ NameChangeEvent : public Event {
 public:
+  NameChangeEvent(std::string oldName, std::string newName);
   
-  QuadItem(bool visible = true);
+  virtual std::string name() const;
   
+  inline const std::string& oldName() const {
+    return __oldName;
+  }
   
-};
+  inline const std::string& newName() const {
+    return __newName;
+  }
+
+private:
+  std::string __oldName;
+  std::string __newName;
+
+}; /** @} */
 
 } /* namespace Dee */
 
-#endif // TRIANGLEITEM_H
+#endif // NAMECHANGEEVENT_H

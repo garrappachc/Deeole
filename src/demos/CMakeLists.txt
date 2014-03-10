@@ -3,7 +3,6 @@ include_directories(
   ${CMAKE_BINARY_DIR}/src/engine
 )
 
-add_subdirectory(colors)
 add_subdirectory(suzanne)
 
-add_custom_target(demos DEPENDS colors suzanne)
+add_custom_target(demos DEPENDS suzanne)

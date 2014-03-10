@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
       }
     } else if (keyboard->keyDown(Dee::Key::H) && keyboard->keyDown(Dee::Key::LCtrl)) {
       if (!keyDown) {
-        deeApp->sceneManager()->activeScene()->setAntyaliasing(true);
+        deeApp->sceneManager()->activeScene()->setAntyaliasing(!deeApp->sceneManager()->activeScene()->hasAntyaliasing());
       }
     } else {
       keyDown = false;
@@ -91,8 +91,6 @@ int main(int argc, char** argv) {
     int y = deeApp->window()->height() / 2;
     
     deeApp->cursor()->setPosition(x, y);
-    
-//     std::cout << "LookAt: " << camera.lookAt() << std::endl;
   });
   
   Dee::CubeItem item;
@@ -102,7 +100,7 @@ int main(int argc, char** argv) {
   item.back().setColor(Dee::Color("yellow"));
   item.top().setColor(Dee::Color("white"));
   item.bottom().setColor(Dee::Color("white"));
-  
+
   app.sceneManager()->activeScene()->addRenderable(&item);
   
   FrameCounter counter;

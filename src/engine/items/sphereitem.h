@@ -1,6 +1,6 @@
 /*
- * quaditem.cpp
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * sphereitem.h
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,24 +17,28 @@
  *
  */
 
-#include "quaditem.h"
+#ifndef SPHEREITEM_H
+#define SPHEREITEM_H
+
+#include "core/deeglobal.h"
+
+#include "core/item.h"
 
 namespace Dee {
 
-QuadItem::QuadItem(bool visible) :
-    Item({
-      Mesh({
-        /* Front side */
-        { -0.5f,  0.5f, -0.5f },
-        {  0.5f,  0.5f, -0.5f },
-        {  0.5f, -0.5f, -0.5f },
-        
-        {  0.5f, -0.5f, -0.5f },
-        { -0.5f, -0.5f, -0.5f },
-        { -0.5f,  0.5f, -0.5f }
-      })
-      
-    }, visible) {}
-
+class SphereItem : public Item {
+public:
+  SphereItem(int space = 10, bool visible = true);
+  
+protected:
+  void render() override;
+  
+private:
+  void __createSphere(int space);
+  
+  
+};
 
 } /* namespace Dee */
+
+#endif // SPHEREITEM_H

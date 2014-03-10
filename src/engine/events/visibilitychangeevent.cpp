@@ -1,6 +1,6 @@
 /*
- * triangleitem.h
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * visibilitychangeevent.cpp
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,24 +17,15 @@
  *
  */
 
-#ifndef TRIANGLEITEM_H
-#define TRIANGLEITEM_H
-
-#include "core/deeglobal.h"
-
-#include "core/item.h"
+#include "visibilitychangeevent.h"
 
 namespace Dee {
 
-class TriangleItem : public Item {
-  
-public:
-  
-  TriangleItem(bool visible = true);
-  
-  
-};
+VisibilityChangeEvent::VisibilityChangeEvent(bool visible) :
+     __visible(visible) {}
+
+std::string VisibilityChangeEvent::name() const {
+  return "VisibilityChangeEvent";
+}
 
 } /* namespace Dee */
-
-#endif // TRIANGLEITEM_H

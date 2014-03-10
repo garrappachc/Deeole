@@ -59,8 +59,8 @@ public:
   }
   
 protected:
-  void updateVisibility(bool visible) override;
-  void updateName(const std::string& name) override;
+  void visibilityChangeEvent(VisibilityChangeEvent* event) override;
+  void nameChangeEvent(NameChangeEvent* event) override;
   void updateSize(int width, int height) override;
   bool updateFullscreen(bool fullscreen) override;
   

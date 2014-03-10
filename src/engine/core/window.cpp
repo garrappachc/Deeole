@@ -18,6 +18,8 @@
  */
 
 #include "core/application.h"
+#include "events/namechangeevent.h"
+#include "events/visibilitychangeevent.h"
 #include "utils/logger.h"
 
 #include "window.h"
@@ -39,8 +41,9 @@ Window::~Window() {
 }
 
 DeeSlot Window::show() {
-  updateVisibility(true);
-  __visible = true;
+  VisibilityChangeEvent event(true);
+  visibilityChangeEvent(&event);
+  __visible = event.visible();
   
   emit shown();
   
@@ -51,15 +54,17 @@ DeeSlot Window::show() {
 }
 
 DeeSlot Window::close() {
-  updateVisibility(false);
-  __visible = false;
+  VisibilityChangeEvent event(false);
+  visibilityChangeEvent(&event);
+  __visible = event.visible();
   
   emit closed();
 }
 
 void Window::setName(std::string name) {
-  updateName(name);
-  __name = name;
+  NameChangeEvent event(__name, name);
+  nameChangeEvent(&event);
+  __name = event.newName();
 }
 
 void Window::setWidth(int width) {

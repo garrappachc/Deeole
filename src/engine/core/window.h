@@ -28,6 +28,9 @@
 #include "core/signal.h"
 
 namespace Dee {
+
+class NameChangeEvent;
+class VisibilityChangeEvent;
   
 /**
  * \ingroup Core
@@ -63,7 +66,7 @@ public:
    */
   virtual ~Window();
   
-    /**
+   /**
    * Shows the window and makes it active rendering context for OpenGL.
    * 
    * \sa hide().
@@ -212,7 +215,7 @@ protected:
    * \param visible If true, the window must be shown on the screen,
    *    if false - closed.
    */
-  virtual void updateVisibility(bool visible) = 0;
+  virtual void visibilityChangeEvent(VisibilityChangeEvent* event) = 0;
   
   /**
    * Called when setName() is called.
@@ -221,7 +224,7 @@ protected:
    * 
    * \param name The new window name.
    */
-  virtual void updateName(const std::string& name) = 0;
+  virtual void nameChangeEvent(NameChangeEvent* event) = 0;
   
   /**
    * Called when setWidth(), setHeight() or setSize() are called.

@@ -1,6 +1,6 @@
 /*
- * pointitem.cpp
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * event.h
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,38 +17,29 @@
  *
  */
 
-#include <GL/gl.h>
+#ifndef EVENT_H
+#define EVENT_H
 
-#include "pointitem.h"
+#include <string>
+
+#include "core/deeglobal.h"
 
 namespace Dee {
 
-PointItem::PointItem(bool visible) :
-    Item({
-      Mesh({{0.0f, 0.0f, 0.0f}})
-    }, visible),
-    __size(1.0f) {}
-
-void PointItem::setSize(float size) {
-  __size = size;
-}
-
-void PointItem::render() {
+/**
+ * \ingroup Core
+ * @{
+ * 
+ * The base class for all events.
+ */
+class __DeeExport__ Event {
   
-  glPushMatrix();
-  glEnable(GL_POINT_SMOOTH);
+public:
+  virtual ~Event() = default;
+  virtual std::string name() const = 0;
   
-  glMultMatrixf(transform());
-  glColor3f(1.0f, 1.0f, 1.0f);
-  
-  glPointSize(__size);
-  
-  glVertexPointer(4, GL_FLOAT, 0, &(meshes()[0].vertices()[0]));
-  glDrawArrays(GL_POINTS, 0, meshes()[0].vertices().size());
-  
-  glDisable( GL_POINT_SMOOTH );
-  glPopMatrix();
-}
-
+}; /** @} */
 
 } /* namespace Dee */
+
+#endif // EVENT_H

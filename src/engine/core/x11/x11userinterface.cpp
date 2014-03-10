@@ -54,8 +54,6 @@ void X11UserInterface::processEvents() {
 DeeSlot X11UserInterface::afterFirstFrame() {
   X11::captureMouseMotion(true);
   deeApp->afterRender.disconnect(this, &X11UserInterface::afterFirstFrame);
-  
-  Logger::debug("X11UserInterface: afterFirstFrame called.");
 }
 
 
