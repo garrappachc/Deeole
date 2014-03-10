@@ -19,6 +19,8 @@
 
 #include <cstdio>
 
+#include "core/size.h"
+
 #include "output.h"
 
 namespace Dee {
@@ -84,6 +86,11 @@ Output& Output::operator <<(const double& d) {
 
 Output& Output::operator <<(const std::string& s) {
   printf("%s", s.c_str());
+  return *this;
+}
+
+Output& Output::operator<<(const Size& size) {
+  printf("Size(%i, %i)", size.width(), size.height());
   return *this;
 }
 

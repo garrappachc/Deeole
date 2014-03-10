@@ -21,6 +21,7 @@ set (core_SRCS
   scene.cpp
   scenemanager.cpp
   scopedmutex.cpp
+  size.cpp
   slotqueue.cpp
   thread.cpp
   timer.cpp

@@ -59,8 +59,8 @@ void FreeCamera::setProjection() {
 //                     static_cast<GLdouble>(deeApp->window()->height());
 //   gluPerspective(__fovy, aspect, zNear(), zFar());
   
-  float aspect = static_cast<float>(deeApp->window()->width()) /
-                 static_cast<float>(deeApp->window()->height());
+  float aspect = static_cast<float>(deeApp->window()->size().width()) /
+                 static_cast<float>(deeApp->window()->size().height());
   
   projectionMatrix().perspective(__fovy, aspect, zNear(), zFar());
   

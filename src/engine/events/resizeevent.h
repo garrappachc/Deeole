@@ -1,5 +1,5 @@
 /*
- * event.cpp
+ * resizeevent.h
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,14 +17,44 @@
  *
  */
 
-#include "event.h"
+#ifndef RESIZEEVENT_H
+#define RESIZEEVENT_H
+
+#include "core/deeglobal.h"
+#include "core/size.h"
+#include "events/event.h"
 
 namespace Dee {
 
-Event::Event() : __spontaneous(false) {}
-
-void Event::setSpontaneous(bool spontaneous) {
-  __spontaneous = spontaneous;
-}
+/**
+ * \ingroup Core
+ * @{
+ * 
+ * The ResizeEvent is used to notify the window that user requests
+ * to change its size, i.e. by calling Window::setSize().
+ */
+class __DeeExport__ ResizeEvent : public Event {
+  
+public:
+  ResizeEvent(const Size& oldSize, const Size& newSize);
+  
+  std::string name() const override;
+  
+  inline const Size& oldSize() const {
+    return __oldSize;
+  }
+  
+  inline const Size& newSize() const {
+    return __newSize;
+  }
+  
+private:
+  Size __oldSize;
+  Size __newSize;
+  
+  
+};  /** @} */
 
 } /* namespace Dee */
+
+#endif // RESIZEEVENT_H

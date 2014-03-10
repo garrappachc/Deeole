@@ -1,5 +1,5 @@
 /*
- * event.cpp
+ * fullscreenevent.h
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,14 +17,38 @@
  *
  */
 
-#include "event.h"
+#ifndef FULLSCREENEVENT_H
+#define FULLSCREENEVENT_H
+
+#include "core/deeglobal.h"
+
+#include "events/event.h"
 
 namespace Dee {
 
-Event::Event() : __spontaneous(false) {}
-
-void Event::setSpontaneous(bool spontaneous) {
-  __spontaneous = spontaneous;
-}
+/**
+ * \ingroup Core
+ * @{
+ * 
+ * The FullscreenEvent is called whenever user requests the window
+ * to became fullscreen or normal window.
+ */
+class __DeeExport__ FullscreenEvent : public Event {
+  
+public:
+  FullscreenEvent(bool fullscreen);
+  
+  std::string name() const override;
+  
+  inline bool fullscreen() const {
+    return __fullscreen;
+  }
+  
+private:
+  bool __fullscreen;
+  
+}; /** @} */
 
 } /* namespace Dee */
+
+#endif // FULLSCREENEVENT_H

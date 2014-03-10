@@ -25,6 +25,8 @@
 #include "core/deeglobal.h"
 
 namespace Dee {
+  
+  class Size;
 
 /**
  * \ingroup Utils
@@ -88,6 +90,8 @@ public:
   Output& operator <<(const double& d);
   
   Output& operator <<(const std::string& s);
+  
+  Output& operator <<(const Size& size);
   
 private:
   

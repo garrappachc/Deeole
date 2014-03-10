@@ -87,8 +87,8 @@ int main(int argc, char** argv) {
     const Dee::Mouse* mouse = Dee::Application::input()->mouse();
     camera.rotate(mouse->motion());
     
-    int x = deeApp->window()->width() / 2;
-    int y = deeApp->window()->height() / 2;
+    int x = deeApp->window()->size().width() / 2;
+    int y = deeApp->window()->size().height() / 2;
     
     deeApp->cursor()->setPosition(x, y);
   });

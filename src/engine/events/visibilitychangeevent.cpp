@@ -22,6 +22,7 @@
 namespace Dee {
 
 VisibilityChangeEvent::VisibilityChangeEvent(bool visible) :
+    Event(),
      __visible(visible) {}
 
 std::string VisibilityChangeEvent::name() const {

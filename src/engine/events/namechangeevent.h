@@ -33,10 +33,11 @@ namespace Dee {
  * to change.
  */
 class __DeeExport__ NameChangeEvent : public Event {
+  
 public:
   NameChangeEvent(std::string oldName, std::string newName);
   
-  virtual std::string name() const;
+  std::string name() const override;
   
   inline const std::string& oldName() const {
     return __oldName;

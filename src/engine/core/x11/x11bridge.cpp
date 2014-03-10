@@ -24,6 +24,8 @@
 #include "core/inputhandler.h"
 #include "core/keyboard.h"
 #include "core/x11/x11window.h"
+#include "events/resizeevent.h"
+#include "events/visibilitychangeevent.h"
 #include "utils/logger.h"
 
 #include "x11bridge.h"
@@ -59,18 +61,25 @@ void X11Bridge::closeDisplay() {
 void X11Bridge::processEvents() {
   static XEvent event;
   static X11Window* window = dynamic_cast<X11Window*>(Application::window());
+  DeeAssert(window);
   
   while (XPending(X11::display())) {
     XNextEvent(X11::display(), &event);
     
     switch (event.type) {
-      case MapNotify:
-        window->showEvent();
+      case MapNotify: {
+          VisibilityChangeEvent event(true);
+          event.setSpontaneous(true);
+          window->visibilityChangeEvent(&event);
+        }
         break;
         
       case ClientMessage:
-        if (static_cast<Atom>(event.xclient.data.l[0]) == X11::__wmCloseMessage())
-          window->closeEvent();
+        if (static_cast<Atom>(event.xclient.data.l[0]) == X11::__wmCloseMessage()) {
+          VisibilityChangeEvent event(false);
+          event.setSpontaneous(true);
+          window->visibilityChangeEvent(&event);
+        }
         break;
         
       case KeyPress:
@@ -90,8 +99,11 @@ void X11Bridge::processEvents() {
         int w = event.xconfigure.width;
         int h = event.xconfigure.height;
         
-        if (w != window->width() || h != window->height())
-          window->resizeEvent(w, h);
+        if (w != window->size().width() || h != window->size().height()) {
+          ResizeEvent event(window->size(), Size(w, h));
+          event.setSpontaneous(true);
+          window->resizeEvent(&event);
+        }
         break;
     }
   }

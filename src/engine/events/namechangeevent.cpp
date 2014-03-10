@@ -22,6 +22,7 @@
 namespace Dee {
 
 NameChangeEvent::NameChangeEvent(std::string oldName, std::string newName) :
+    Event(),
      __oldName(oldName),
      __newName(newName) {}
 

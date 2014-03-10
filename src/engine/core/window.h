@@ -26,10 +26,13 @@
 
 #include "core/object.h"
 #include "core/signal.h"
+#include "core/size.h"
 
 namespace Dee {
 
+class FullscreenEvent;
 class NameChangeEvent;
+class ResizeEvent;
 class VisibilityChangeEvent;
   
 /**
@@ -84,33 +87,26 @@ public:
    * Sets the window name.
    * 
    * \param name The new name.
+   * \sa name().
    */
   void setName(std::string name);
   
   /**
-   * Sets the window width.
-   * 
-   * \param width The new width.
-   * \sa width() and setSize().
-   */
-  void setWidth(int width);
-  
-  /**
-   * Sets the window height.
-   * 
-   * \param height The new height.
-   * \sa height() and setSize().
-   */
-  void setHeight(int height);
-  
-  /**
-   * Sets the window dimensions.
+   * Resizes the window.
    * 
    * \param width The new width.
    * \param height The new height.
-   * \sa width() and height().
+   * \sa size().
    */
   void setSize(int width, int height);
+  
+  /**
+   * Resizes the window.
+   * 
+   * \param size The new size.
+   * \sa size().
+   */
+  void setSize(const Size& size);
   
   /**
    * Makes the window fullscreen (or not).
@@ -147,22 +143,8 @@ public:
     return __y;
   }
   
-  /**
-   * Gets the window width.
-   * 
-   * \return The window current width.
-   */
-  inline int width() const {
-    return __width;
-  }
-  
-  /**
-   * Gets the window height.
-   * 
-   * \return The window current height.
-   */
-  inline int height() const {
-    return __height;
+  inline const Size& size() const {
+    return __size;
   }
   
   /**
@@ -186,12 +168,9 @@ public:
   }
   
   // signals
-  Signal<> shown;  /**< Emitted just after the window becomes visible. */
-  Signal<> closed; /**< Emitted just after the window is closed. */
-  Signal<
-      int /* width */,
-      int /* height */
-    > resized;     /**< Emitted just after the window gets resized. */
+  Signal<>      shown;   /**< Emitted just after the window becomes visible. */
+  Signal<>      closed;  /**< Emitted just after the window is closed. */
+  Signal<Size>  resized; /**< Emitted just after the window gets resized. */
     
   /**
    * \cond HIDDEN_DOC
@@ -209,74 +188,33 @@ protected:
   
   /**
    * Called when show() or hide() are called.
-   * 
-   * Implement this function to show and hide the window.
-   * 
-   * \param visible If true, the window must be shown on the screen,
-   *    if false - closed.
    */
-  virtual void visibilityChangeEvent(VisibilityChangeEvent* event) = 0;
+  virtual void visibilityChangeEvent(VisibilityChangeEvent* event);
   
   /**
    * Called when setName() is called.
-   * 
-   * Implement this function to update the window's title bar.
-   * 
-   * \param name The new window name.
    */
-  virtual void nameChangeEvent(NameChangeEvent* event) = 0;
+  virtual void nameChangeEvent(NameChangeEvent* event);
   
   /**
-   * Called when setWidth(), setHeight() or setSize() are called.
-   * 
-   * Implement this function to update the window on the screen.
-   * 
-   * \param width The new width.
-   * \param height The new height.
+   * Called when setSize() is called.
    */
-  virtual void updateSize(int width, int height) = 0;
+  virtual void resizeEvent(ResizeEvent* event);
   
   /**
    * Called when setFullscreen() is called.
-   * 
-   * This function may end in failure, and then it should return false.
-   * It everything run properly and the window _is_ fullscreen, return
-   * true.
    */
-  virtual bool updateFullscreen(bool fullscreen) = 0;
-  
-  /**
-   * Override this function to receive external resize notifications.
-   * Call the base implementation to have the size updated.
-   * 
-   * \param width The new width.
-   * \param height The new height.
-   */
-  virtual void resizeEvent(int width, int height);
-  
-  /**
-   * Override this function to receive external show notifications.
-   * Call the base implementation to have the visibility updated.
-   */
-  virtual void showEvent();
-  
-  /**
-   * Override this function to receive external close notifications.
-   * Call the base implementation to have the visibility updated.
-   */
-  virtual void closeEvent();
+  virtual void fullscreenEvent(FullscreenEvent* event);
   
   /**
    * \endcond
    */
   
 private:
-  
   std::string __name;
   int         __x;
   int         __y;
-  int         __width;
-  int         __height;
+  Size        __size;
   bool        __visible;
   bool        __fullscreen;
   

@@ -1,5 +1,5 @@
 /*
- * event.cpp
+ * fullscreenevent.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,14 +17,16 @@
  *
  */
 
-#include "event.h"
+#include "fullscreenevent.h"
 
 namespace Dee {
 
-Event::Event() : __spontaneous(false) {}
+FullscreenEvent::FullscreenEvent(bool fullscreen) :
+    Event(),
+    __fullscreen(fullscreen) {}
 
-void Event::setSpontaneous(bool spontaneous) {
-  __spontaneous = spontaneous;
+std::string FullscreenEvent::name() const {
+  return "FullscreenEvent";
 }
 
 } /* namespace Dee */

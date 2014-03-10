@@ -18,7 +18,9 @@
  */
 
 #include "core/application.h"
+#include "events/fullscreenevent.h"
 #include "events/namechangeevent.h"
+#include "events/resizeevent.h"
 #include "events/visibilitychangeevent.h"
 #include "utils/logger.h"
 
@@ -28,11 +30,10 @@ namespace Dee {
   
 Window::Window(std::string name) :
     __name(std::forward<std::string>(name)),
-    __width(800),
-    __height(600),
+    __size(800, 600),
     __visible(false),
     __fullscreen(false) {
-  Application::singleton().aboutToQuit.connect(this, &Window::close);
+  deeApp->aboutToQuit.connect(this, &Window::close);
 }
 
 Window::~Window() {
@@ -47,10 +48,8 @@ DeeSlot Window::show() {
   
   emit shown();
   
-  if (__fullscreen) {
-    __fullscreen = false;
+  if (__fullscreen)
     setFullscreen(true);
-  }
 }
 
 DeeSlot Window::close() {
@@ -67,52 +66,46 @@ void Window::setName(std::string name) {
   __name = event.newName();
 }
 
-void Window::setWidth(int width) {
-  updateSize(width, this->height());
-  __width = width;
-  
-  emit resized(__width, __height);
-}
-
-void Window::setHeight(int height) {
-  updateSize(this->width(), height);
-  __height = height;
-  
-  emit resized(__width, __height);
-}
-
 void Window::setSize(int width, int height) {
-  updateSize(width, height);
-  __width = width;
-  __height = height;
+  ResizeEvent event(this->size(), Size(width, height));
+  resizeEvent(&event);
+  __size = event.newSize();
   
-  emit resized(__width, __height);
+  emit resized(__size);
+}
+
+void Window::setSize(const Size& size) {
+  ResizeEvent event(this->size(), size);
+  resizeEvent(&event);
+  __size = event.newSize();
+  
+  emit resized(__size);
 }
 
 void Window::setFullscreen(bool fullscreen) {
   if (visible()) {
-    if (updateFullscreen(fullscreen))
-      __fullscreen = fullscreen;
-  } else {
-    __fullscreen = fullscreen;
+    FullscreenEvent event(fullscreen);
+    fullscreenEvent(&event);
   }
-}
-
-void Window::resizeEvent(int width, int height) {
-  __width = width;
-  __height = height;
   
-  emit resized(width, height);
+  __fullscreen = fullscreen;
 }
 
-void Window::showEvent() {
-  __visible = true;
-  emit shown();
+void Window::visibilityChangeEvent(VisibilityChangeEvent* event) {
+  __visible = event->visible();
+  if (visible())
+    emit shown();
+  else
+    emit closed();
 }
 
-void Window::closeEvent() {
-  __visible = false;
-  emit closed();
+void Window::nameChangeEvent(NameChangeEvent* event) {}
+
+void Window::resizeEvent(ResizeEvent* event) {
+  __size = event->newSize();
+  emit resized(__size);
 }
+
+void Window::fullscreenEvent(FullscreenEvent* event) {}
 
 } /* namespace Dee */

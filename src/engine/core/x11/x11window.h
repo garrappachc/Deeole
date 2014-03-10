@@ -61,8 +61,8 @@ public:
 protected:
   void visibilityChangeEvent(VisibilityChangeEvent* event) override;
   void nameChangeEvent(NameChangeEvent* event) override;
-  void updateSize(int width, int height) override;
-  bool updateFullscreen(bool fullscreen) override;
+  void resizeEvent(ResizeEvent* event) override;
+  void fullscreenEvent(FullscreenEvent* event) override;
   
 private:
   void __setupWindow();

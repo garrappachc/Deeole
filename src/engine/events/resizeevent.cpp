@@ -1,5 +1,5 @@
 /*
- * event.cpp
+ * resizeevent.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,14 +17,17 @@
  *
  */
 
-#include "event.h"
+#include "resizeevent.h"
 
 namespace Dee {
 
-Event::Event() : __spontaneous(false) {}
+ResizeEvent::ResizeEvent(const Size& oldSize, const Size& newSize) :
+    Event(),
+    __oldSize(oldSize),
+    __newSize(newSize) {}
 
-void Event::setSpontaneous(bool spontaneous) {
-  __spontaneous = spontaneous;
+std::string ResizeEvent::name() const {
+  return "ResizeEvent";
 }
 
 } /* namespace Dee */

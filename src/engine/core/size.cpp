@@ -1,5 +1,5 @@
 /*
- * event.cpp
+ * size.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,14 +17,28 @@
  *
  */
 
-#include "event.h"
+#include "size.h"
 
 namespace Dee {
 
-Event::Event() : __spontaneous(false) {}
+Size::Size() :
+    __width(0),
+    __height(0) {}
 
-void Event::setSpontaneous(bool spontaneous) {
-  __spontaneous = spontaneous;
+Size::Size(int width, int height) :
+    __width(width),
+    __height(height) {}
+
+void Size::setWidth(int width) {
+  __width = width;
+}
+
+void Size::setHeight(int height) {
+  __height = height;
+}
+
+bool Size::isNull() const {
+  return __width == 0 || __height == 0;
 }
 
 } /* namespace Dee */

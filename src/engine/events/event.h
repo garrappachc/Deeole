@@ -25,6 +25,8 @@
 #include "core/deeglobal.h"
 
 namespace Dee {
+  
+  class X11Bridge;
 
 /**
  * \ingroup Core
@@ -34,9 +36,21 @@ namespace Dee {
  */
 class __DeeExport__ Event {
   
+  friend class X11Bridge;
+  
 public:
+  Event();
   virtual ~Event() = default;
   virtual std::string name() const = 0;
+  
+  inline bool spontaneous() const {
+    return __spontaneous;
+  }
+  
+private:
+  void setSpontaneous(bool spontaneous);
+  
+  bool __spontaneous;
   
 }; /** @} */
 

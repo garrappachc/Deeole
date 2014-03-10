@@ -81,9 +81,9 @@ void SceneManager::render() {
     __activeScene->render();
 }
 
-DeeSlot SceneManager::__windowResize(int width, int height) {
+DeeSlot SceneManager::__windowResize(Size size) {
   if (__activeScene)
-    __activeScene->resizeViewport(width, height);
+    __activeScene->resizeViewport(size.width(), size.height());
 }
 
 } /* namespace Dee */

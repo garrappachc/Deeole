@@ -25,6 +25,7 @@
 #include "core/deeglobal.h"
 
 #include "core/object.h"
+#include "core/size.h"
 
 namespace Dee {
   
@@ -137,7 +138,7 @@ protected:
   
 private:
   
-  DeeSlot __windowResize(int width, int height);
+  DeeSlot __windowResize(Size size);
   
   std::vector<Scene*> __scenes;
   Scene*              __activeScene;

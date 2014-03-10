@@ -21,7 +21,9 @@
 #include <GL/glx.h>
 
 #include "core/x11/x11bridge.h"
+#include "events/fullscreenevent.h"
 #include "events/namechangeevent.h"
+#include "events/resizeevent.h"
 #include "events/visibilitychangeevent.h"
 #include "utils/logger.h"
 
@@ -43,25 +45,33 @@ void X11Window::swapBuffers() {
 }
 
 void X11Window::visibilityChangeEvent(VisibilityChangeEvent* event) {
-  if (event->visible())
-    XMapWindow(X11::display(), __handle);
-  else
-    XUnmapWindow(X11::display(), __handle);
+  if (!event->spontaneous()) {
+    if (event->visible())
+      XMapWindow(X11::display(), __handle);
+    else
+      XUnmapWindow(X11::display(), __handle);
+  }
+  
+  Window::visibilityChangeEvent(event);
 }
 
 void X11Window::nameChangeEvent(NameChangeEvent* event) {
   XStoreName(X11::display(), __handle, event->newName().c_str());
 }
 
-void X11Window::updateSize(int width, int height) {
-  XWindowChanges changes;
-  changes.width = width;
-  changes.height = height;
+void X11Window::resizeEvent(ResizeEvent* event) {
+  if (!event->spontaneous()) {
+    XWindowChanges changes;
+    changes.width = event->newSize().width();
+    changes.height = event->newSize().height();
+    
+    XConfigureWindow(X11::display(), __handle, CWWidth | CWHeight, &changes);
+  }
   
-  XConfigureWindow(X11::display(), __handle, CWWidth | CWHeight, &changes);
+  Window::resizeEvent(event);
 }
 
-bool X11Window::updateFullscreen(bool fullscreen) {
+void X11Window::fullscreenEvent(FullscreenEvent* event) {
   Atom atom = XInternAtom(X11::display(), "_NET_WM_STATE_FULLSCREEN", False);
   
   XEvent xev;
@@ -70,13 +80,13 @@ bool X11Window::updateFullscreen(bool fullscreen) {
   xev.xclient.window = __handle;
   xev.xclient.message_type = XInternAtom(X11::display(), "_NET_WM_STATE", False);
   xev.xclient.format = 32;
-  xev.xclient.data.l[0] = fullscreen ? 1 : 0;
+  xev.xclient.data.l[0] = event->fullscreen() ? 1 : 0;
   xev.xclient.data.l[1] = atom;
   
   XSendEvent(X11::display(), DefaultRootWindow(X11::display()), False,
              SubstructureRedirectMask | SubstructureNotifyMask, &xev);
   
-  return true;
+  Dee::Window::fullscreenEvent(event);
 }
 
 void X11Window::__setupWindow() {
@@ -120,7 +130,7 @@ void X11Window::__setupWindow() {
   __handle = XCreateWindow(X11::display(),
     RootWindow(X11::display(), visualInfo->screen),
     x(), y(),
-    width(), height(),
+    size().width(), size().height(),
     0, visualInfo->depth, InputOutput,
     visualInfo->visual, winmask,
     &winAttrs);

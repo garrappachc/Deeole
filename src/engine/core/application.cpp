@@ -83,7 +83,7 @@ int Application::run() {
   Logger::debug("Application: running...");
   
   __window->show();
-  __cursor->setPosition(__window->width() / 2, __window->height() / 2);
+  __cursor->setPosition(__window->size().width() / 2, __window->size().height() / 2);
   __window->swapBuffers();
   
   __isRunning = true;
