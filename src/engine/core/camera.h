@@ -35,7 +35,6 @@ namespace Dee {
  * \ingroup Core
  * @{
  * 
- * 
  * The Camera class represents the viewpoint of the scene.
  * 
  * This class is used to set up proper matrices before the render process
@@ -183,22 +182,64 @@ public:
     return __up;
   }
   
+  /**
+   * The _zNear_ parameter specifies the distance from the viewer to the near
+   * clipping plane.
+   * 
+   * \return The camera's _zNear_ value.
+   * \sa zFar().
+   */
   inline float zNear() const {
     return __zNear;
   }
   
+  /**
+   * The _zFar_ parameter specifies the distance from the viewer to the far
+   * clipping plane.
+   * 
+   * \return The camera's _zFar_ value.
+   * \sa zNear().
+   */
   inline float zFar() const {
     return __zFar;
   }
   
+  /**
+   * Provides direct access to the camera's current projection matrix.
+   * 
+   * \return The camera's projection matrix.
+   * \sa modelViewMatrix().
+   */
   inline const ProjectionMatrix& projectionMatrix() const {
     return __projectionMatrix;
   }
   
+  /**
+   * Provides direct access to the camera's current projection matrix.
+   * 
+   * \return The camera's projection matrix.
+   * \sa modelViewMatrix().
+   */
   inline ProjectionMatrix& projectionMatrix() {
     return __projectionMatrix;
   }
   
+  /**
+   * Provides direct access to the camera's current model-view matrix.
+   * 
+   * \return The camera's model-view matrix.
+   * \sa projectionMatrix().
+   */
+  inline const ModelViewMatrix& modelViewMatrix() const {
+    return __modelViewMatrix;
+  }
+  
+  /**
+   * Provides direct access to the camera's current model-view matrix.
+   * 
+   * \return The camera's model-view matrix.
+   * \sa projectionMatrix().
+   */
   inline ModelViewMatrix& modelViewMatrix() {
     return __modelViewMatrix;
   }
@@ -222,7 +263,7 @@ private:
   Vector3d __up;     /**< Up vector */
   
   ProjectionMatrix __projectionMatrix;
-  ModelViewMatrix __modelViewMatrix;
+  ModelViewMatrix  __modelViewMatrix;
   
   float __zNear; /**< Specifies the distance from the viewer to the near
                        clipping plane (always positive). */

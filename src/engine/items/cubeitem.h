@@ -26,7 +26,7 @@
 
 namespace Dee {
 
-class CubeItem : public Item {
+class __DeeExport__ CubeItem : public Item {
   
 public:
   

@@ -26,7 +26,7 @@
 
 namespace Dee {
 
-class SphereItem : public Item {
+class __DeeExport__ SphereItem : public Item {
 public:
   SphereItem(int space = 10, bool visible = true);
   

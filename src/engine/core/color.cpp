@@ -42,10 +42,10 @@ static const std::map<std::string, Color> ColorMap({
 });
 
 Color::Color() :
-    __r(0),
-    __g(0),
-    __b(0),
-    __a(255) {}
+    __r(0.0f),
+    __g(0.0f),
+    __b(0.0f),
+    __a(255.0f) {}
 
 Color::Color(int r, int g, int b, int a) :
     __r(i2f(r)),

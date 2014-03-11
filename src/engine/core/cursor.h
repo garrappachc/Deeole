@@ -24,16 +24,53 @@
 
 namespace Dee {
 
-class Cursor {
+/**
+ * \ingroup Core
+ * @{
+ * 
+ * The Cursor class represents the mouse cursor on the screen.
+ * 
+ * This class gives direct access to the mouse cursor. One can
+ * set its position on the screen and set its visibility.
+ * 
+ * \sa Application::cursor().
+ * \TODO Change cursor shape.
+ */
+class __DeeExport__ Cursor {
   
 public:
+  
+  /**
+   * Sets cursor position on the screen. The position is relative
+   * to the window.
+   * 
+   * \param x X coordinate of the new position.
+   * \param y Y coordinate of the new position.
+   */
   virtual void setPosition(int x, int y) = 0;
+  
+  /**
+   * Sets the visibility.
+   * 
+   * \param visible If false, the cursor will be hidden, otherwise - shown.
+   */
   virtual void setVisible(bool visible) = 0;
   
+  /**
+   * Shows the cursor.
+   * 
+   * This function is equivalent to setVisible(true).
+   */
   void show();
+  
+  /**
+   * Hides the cursor.
+   * 
+   * This function is equivalent to setVisible(false).
+   */
   void hide();
   
-};
+}; /** @} */
 
 } /* namespace Dee */
 

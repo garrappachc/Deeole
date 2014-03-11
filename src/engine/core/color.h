@@ -44,7 +44,9 @@ public:
   Color();
   
   /**
-   * Constructs the color based on the given RGBA values.
+   * Constructs the color based on the given RGBA values. Each value must
+   * be in range [0-255]. 0 is no color, 255 is full color.
+   * 
    * \param r The red value.
    * \param g The green value.
    * \param b The blue value.
@@ -52,6 +54,15 @@ public:
    */
   Color(int r, int g, int b, int a = 255);
   
+  /**
+   * Constructs the color based on the given RGBA values. Each value must
+   * be in range [0.0 - 1.0]. 0 is no color, 1.0 is full color.
+   * 
+   * \param r The red value.
+   * \param g The green value.
+   * \param b The blue value.
+   * \param a The alpha value.
+   */
   Color(float r, float g, float b, float a = 1.0f);
   
   /**
@@ -67,20 +78,38 @@ public:
    */
   Color(const std::string& name);
   
+  /**
+   * Writes color values to the array. The array must be at least
+   * 16-bytes long, in order to store all 4 RGBA float values.
+   * 
+   * \param array The destination array.
+   */
   void dumpTo(float* array) const;
   
+  /**
+   * \return The red component of the color.
+   */
   inline const float r() const {
     return __r;
   }
   
+  /**
+   * \return The green component of the color.
+   */
   inline const float g() const {
     return __g;
   }
   
+  /**
+   * \return The blue component of the color.
+   */
   inline const float b() const {
     return __b;
   }
   
+  /**
+   * \return The alpha component of the color.
+   */
   inline const float a() const {
     return __a;
   }

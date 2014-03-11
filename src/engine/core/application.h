@@ -178,14 +178,33 @@ public:
    */
   static void processEvents();
   
+  /**
+   * Provides direct access to the global InputHandler instance that manages
+   * the application input system.
+   * 
+   * \return Pointer to the only global InputHandler instance.
+   * \sa InputHandler.
+   */
   inline static InputHandler* input() {
     return singleton().__inputHandler;
   }
   
+  /**
+   * Provides direct access to the main application window.
+   * 
+   * \return Pointer to the window.
+   * \sa Window.
+   */
   inline static Window* window() {
     return singleton().__window;
   }
   
+  /**
+   * Provides direct access to the mouse cursor.
+   * 
+   * \return Pointer to the Cursor instance that represents the mouse cursor.
+   * \sa Cursor.
+   */
   inline static Cursor* cursor() {
     return singleton().__cursor;
   }
