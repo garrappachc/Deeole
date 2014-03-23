@@ -440,25 +440,19 @@ template <typename T, unsigned N>
     
     friend Output& operator <<(Output& stream, const Vector& vector) {
       stream << "{";
-      for (int i = 0; i < vector.size(); ++i) {
+      for (int i = 0; i < vector.size() - 1; ++i) {
         stream << vector[i];
-        if (i < vector.size() - 1)
-          stream << ", ";
       }
-      
-      stream << "}";
+      stream << vector[vector.size() - 1] << "}";
       return stream;
     }
     
     friend std::ostream& operator <<(std::ostream& stream, const Vector& vector) {
       stream << '{';
-      for (int i = 0; i < vector.size(); ++i) {
+      for (int i = 0; i < vector.size() - 1; ++i) {
         stream << vector[i];
-        if (i < vector.size() - 1)
-          stream << ", ";
       }
-      
-      stream << '}';
+      stream << vector[vector.size() - 1] << "}";
       return stream;
     }
     
