@@ -48,20 +48,12 @@ Application::Application(int argc, char** argv) :
     __isRunning(false),
     __exitCode(0) {
   
-  __parseArgs(argc, argv);
-  
   __userInterface = new PlatformUserInterface();
   
   __window = __userInterface->getWindow();
   __window->closed.connect(this, &Application::quit);
   
-  if (hasArgument("title"))
-    __window->setName(argumentValue("title"));
-  else
-    __window->setName("Deeole");
-  
-  if (!hasArgument("no-fullscreen"))
-    __window->setFullscreen(true);
+  __parseArgs(argc, argv);
   
   __cursor = __userInterface->getCursor();
   
@@ -125,40 +117,21 @@ void Application::setSceneManager(SceneManager* manager) {
     __sceneManager = __defaultSceneManager;
 }
 
-bool Application::hasArgument(const std::string& argName) {
-  return __arguments.count(argName) > 0;
-}
-
-std::string Application::argumentValue(const std::string& argName) {
-  auto result = __arguments.find(argName);
-  if (result == __arguments.end())
-    return "";
-  else
-    return result->second;
-}
-
 void Application::processEvents() {
   deeApp->__slotQueue->processSlots();
 }
 
 void Application::__parseArgs(int argc, char** argv) {
-  for (int i = 1; i < argc; ++i) {
-    std::string key = argv[i];
-    if (key[0] != '-' || key[1] != '-') {
-      Logger::warning("'%s' is not a valid command line option!", key);
-      continue;
-    }
-    
-    key = key.substr(2);
-    
-    std::string value = "";
-    if (i < argc - 1 && argv[i + 1][0] != '-') {
+  for (int i = 0; i < argc; ++i)
+    __arguments.push_back(std::string(argv[i]));
+  
+  for (int i = 0; i < argc; ++i) {
+    if (__arguments[i] == "--title") {
       i += 1;
-      value = argv[i];
+      __window->setName(__arguments[i]);
+    } else if (__arguments[i] == "--no-fullscreen") {
+      __window->setFullscreen(false);
     }
-    
-    __arguments.insert(std::pair<std::string, std::string>(key, value));
-    
   }
 }
 

@@ -32,7 +32,7 @@ Window::Window(std::string name) :
     __name(std::forward<std::string>(name)),
     __size(800, 600),
     __visible(false),
-    __fullscreen(false) {
+    __fullscreen(true) {
   deeApp->aboutToQuit.connect(this, &Window::close);
 }
 

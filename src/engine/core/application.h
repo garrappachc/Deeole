@@ -65,25 +65,10 @@ public:
    * This constructor parses the command line arguments and initializes
    * the application.
    * 
-   * Later, arguments that the application was launched with can be obtained
-   * using hasArgument() and argumentValue() functions. For example, calling
-   * the application like this: `foo --bar --baz bee` will provide the following
-   * results:
-   * - `hasArgument("bar")`
-   *    `true`
-   * - `hasArgument("baz")`
-   *    `true`
-   * - `argumentValue("baz")`
-   *    `"bee"`
-   * - `argumentValue("bar")`
-   *    `""`
-   * - `hasArgument("trololololo")`
-   *    `false`
-   * 
    * The default command line options are:
    * - `--no-fullscreen`
    *   disables the fullscreen mode (enabled by default). This can be also
-   *   achieved by calling `Window::setFullscreen(false)` on the main window;
+   *   achieved by calling `deeApp->window()->setFullscreen(false)` on the main window;
    * - `--title <title>`
    *    sets the the window title to _title_.
    * 
@@ -151,29 +136,6 @@ public:
   void setSceneManager(SceneManager* manager);
   
   /**
-   * Returns true if the following key was set when launching the application.
-   * 
-   * The _argName_ parameter is the string that follows the _--_ in the command
-   * line argument.
-   * 
-   * \param argName The argument name, for example `--foo` will become `foo`.
-   * \sa argumentValue().
-   */
-  bool hasArgument(const std::string& argName);
-  
-  /**
-   * The argument value.
-   * 
-   * The argument value can be a non-empty string (i.e. `--foo bar`), or
-   * just the empty string (if the value  was not provided, i.e. `-foo`).
-   * 
-   * \param argName The argument name (key).
-   * \return The value.
-   * \sa hasArgument().
-   */
-  std::string argumentValue(const std::string& argName);
-  
-  /**
    * Processes all pending slots until the queue is empty.
    */
   static void processEvents();
@@ -218,6 +180,17 @@ public:
     return __sceneManager;
   }
   
+  /**
+   * Gives access to the list of command-line arguments.
+   * 
+   * Usually, the first argument is the program name.
+   * 
+   * \return Command-line argument list.
+   */
+  inline const std::vector<std::string>& arguments() const {
+    return __arguments;
+  }
+  
   // signals
   Signal<> aboutToQuit; /**< Emitted just before the event loop stops. */
   Signal<> beforeRender; /**< Emitted just before the scene starts to be rendered. */
@@ -241,7 +214,7 @@ private:
   bool       __isRunning;
   int        __exitCode;
   
-  std::map<std::string, std::string> __arguments;
+  std::vector<std::string> __arguments;
   
   static SceneManager* __defaultSceneManager; /**< Default SceneManager instance
                                                    pointer. */
