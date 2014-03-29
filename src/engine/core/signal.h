@@ -52,7 +52,7 @@ public:
  * 
  * \todo Sample code.
  * 
- * \sa Eventful and ConnectionType.
+ * \sa Object and ConnectionType.
  */
 template <typename... Args>
   class __DeeExport__ Signal:
@@ -119,9 +119,7 @@ template <typename... Args>
         if (type == AutoConnection)
           type = __connectionType;
         
-        __slots.push_back(
-          new SlotType(
-            type, lambda));
+        __slots.push_back(new SlotType(type, lambda));
       }
     
     /**
@@ -190,8 +188,8 @@ template <typename... Args>
       __slots.clear();
     }
     
-    ConnectionType         __connectionType;
-    std::vector<SlotType*> __slots;
+    ConnectionType              __connectionType;
+    std::vector<SlotType*>      __slots;
     
   }; /** @} */
 

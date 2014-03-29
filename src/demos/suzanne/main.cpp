@@ -17,6 +17,7 @@
 #include "core/freecamera.h"
 #include "core/item.h"
 #include "items/cubeitem.h"
+#include "utils/logger.h"
 
 class FrameCounter : public Dee::Object {
 public:
@@ -117,6 +118,13 @@ int main(int argc, char** argv) {
 //     item.translate({ 0.0f, 0.01f, 0.0f });
   });
   timer2.start();
+  
+  /* Close the application after 15 seconds */
+  Dee::Timer timer3(1000 * 15);
+  timer3.timeout.connect([=]() {
+    deeApp->window()->close();
+  });
+  timer3.start();
   
   return app.run();
 }
